@@ -143,10 +143,6 @@ headerSubtitle: {
 headerAlertIcon: {
   marginLeft: 12,
   opacity: 0.92,
-  shadowColor: '#e53935',
-  shadowOpacity: 0.18,
-  shadowRadius: 8,
-  shadowOffset: { width: 0, height: 2 },
 },
 reactLogo: {
   height: 64,

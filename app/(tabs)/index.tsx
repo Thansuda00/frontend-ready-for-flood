@@ -86,8 +86,6 @@ export default function HomeScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Background Image */}
-
       <ParallaxScrollView
         headerImage={
           <View style={styles.headerRow}>

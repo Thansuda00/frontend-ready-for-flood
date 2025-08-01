@@ -12,7 +12,7 @@ const floodGuideSections = [
     icon: 'cloud-outline',
     color: '#1976d2',
     tips: [
-      'เช็ึคข่าวพยากรณ์อากาศ เพื่อเตรียมรับมือสถานการณ์ได้อย่างทันท่วงที',
+      'เช็คข่าวพยากรณ์อากาศ เพื่อเตรียมรับมือสถานการณ์ได้อย่างทันท่วงที',
       'วางกระสอบทรายรอบบ้าน เพื่ออุดช่องว่างไม่ให้น้ำไหลเข้าบ้าน',
       'เตรียมของใช้จำเป็น และหมายเลขโทรศัพท์ฉุกเฉิน เพื่อขอความช่วยเหลือจากหน่วยงานที่เกี่ยวข้อง',
     ],
@@ -139,10 +139,6 @@ const styles = StyleSheet.create({
   headerWaterIcon: {
     marginLeft: 12,
     opacity: 0.92,
-    shadowColor: '#1976d2',
-    shadowOpacity: 0.18,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
   },
   reactLogo: {
     height: 64,
