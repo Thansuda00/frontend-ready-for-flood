@@ -1,14 +1,10 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet, View, FlatList } from 'react-native';
+import { FlatList, StyleSheet, View, Button, Modal, ScrollView, TouchableOpacity } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import SoftTabThree from '@/components/buttomNavigator/SoftTabThree';
 import { Picker } from '@react-native-picker/picker';
-import React, { useState, useEffect } from 'react';
-import { Modal, Pressable, Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
 
 const tableHeader = ['สถานี', 'ระดับน้ำ (ม.รทก)', 'สถานการณ์น้ำ', 'เวลา'];
 const allTableData = [
@@ -30,12 +26,44 @@ const allTableData = [
     { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
     { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
     { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
+  ],
+  [
+    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
+    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
+    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
+    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
+    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
+  ],
+  [
+    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
+    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
+    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
+    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
+    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
+  ],
+  [
+    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
+    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
+    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
+    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
+    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
+  ],
+  [
+    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
+    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
+    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
+    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
+    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
   ]
 ];
 
 const dropdownOptions = [
   { label: 'อำเภอเมืองเชียงราย', value: 0 },
   { label: 'อำเภอแม่จัน', value: 1 },
+  { label: 'อำเภอแม่สาย', value: 2 },
+  { label: 'อำเภอเชียงของ', value: 3 },
+  { label: 'อำเภอเทิง', value: 4 },
+  { label: 'อำเภอป่าแดด', value: 5 },
 ];
 
 export default function HomeScreen() {
@@ -59,14 +87,8 @@ export default function HomeScreen() {
   return (
     <View style={{ flex: 1 }}>
       {/* Background Image */}
-      <Image
-        source={require('@/assets/images/15055.jpg')}
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }} contentFit="cover"
-        blurRadius={0}
-      />
 
       <ParallaxScrollView
-        headerBackgroundColor={{ light: '#b6d9f4ff', dark: '#1D3D47' }}
         headerImage={
           <View style={styles.headerRow}>
             <Image
@@ -100,33 +122,34 @@ export default function HomeScreen() {
             </View>
           </View>
         </Modal>
-
-        {/* Dropdown */}
-        <View style={styles.dropdownContainer}>
-          <View style={styles.dropdownInner}>
-            <ThemedText style={styles.dropdownLabel}>เลือกพื้นที่</ThemedText>
-            <Picker
-              selectedValue={selectedDataIndex}
-              onValueChange={(itemValue) => setSelectedDataIndex(itemValue)}
-              mode="dropdown"
-              style={styles.picker}
-              itemStyle={styles.pickerItem}
-            >
-              {dropdownOptions.map(option => (
-                <Picker.Item
-                  key={option.value}
-                  label={option.label}
-                  value={option.value}
-                />
-              ))}
-            </Picker>
-          </View>
+        <View style={styles.chipScroll}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {dropdownOptions.map(option => (
+              <TouchableOpacity
+                key={option.value}
+                style={[
+                  styles.chip,
+                  selectedDataIndex === option.value && styles.chipActive,
+                ]}
+                onPress={() => setSelectedDataIndex(option.value)}
+              >
+                <ThemedText
+                  style={[
+                    styles.chipText,
+                    selectedDataIndex === option.value && styles.chipTextActive,
+                  ]}
+                >
+                  {option.label}
+                </ThemedText>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
 
         <ThemedText style={styles.infoText}>
           ข้อมูลสถานีวัดระดับน้ำในพื้นที่ <ThemedText style={styles.infoHighlight}>{dropdownOptions[selectedDataIndex].label}</ThemedText>
           {'\n'}ณ วันที่ {new Date().getDate()} {getThaiMonthName(new Date())} {new Date().getFullYear() + 543}
-          {' '}เวลา {new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}
+          {' '}เวลา {new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })} น.
         </ThemedText>
 
         <View style={styles.tableContainer}>
@@ -153,18 +176,18 @@ export default function HomeScreen() {
               <View style={styles.tableRow}>
                 <ThemedText style={styles.tableCell}>{item.col1}</ThemedText>
                 <ThemedText style={styles.tableCell}>{item.col2}</ThemedText>
-                  <ThemedText
-                    style={[
-                      styles.col3Cell,
-                      item.col3 === 'น้ำมาก' && { backgroundColor: '#2196f3', borderColor: '#2196f3', color: '#fff' },         // blue
-                      item.col3 === 'น้ำปกติ' && { backgroundColor: '#43a047', borderColor: '#43a047', color: '#fff' },         // green
-                      item.col3 === 'น้ำล้นตลิ่ง' && { backgroundColor: '#e53935', borderColor: '#e53935', color: '#fff' },    // red
-                      item.col3 === 'น้ำน้อย' && { backgroundColor: '#ffd600', borderColor: '#ffd600', color: '#000' },         // yellow
-                      item.col3 === 'น้ำน้อยวิกฤต' && { backgroundColor: '#ff9800', borderColor: '#ff9800', color: '#fff' },   // orange
-                    ]}
-                  >
-                    {item.col3}
-                  </ThemedText>
+                <ThemedText
+                  style={[
+                    styles.col3Cell,
+                    item.col3 === 'น้ำมาก' && { backgroundColor: '#2196f3', borderColor: '#2196f3', color: '#fff' },         // blue
+                    item.col3 === 'น้ำปกติ' && { backgroundColor: '#43a047', borderColor: '#43a047', color: '#fff' },         // green
+                    item.col3 === 'น้ำล้นตลิ่ง' && { backgroundColor: '#e53935', borderColor: '#e53935', color: '#fff' },    // red
+                    item.col3 === 'น้ำน้อย' && { backgroundColor: '#ffd600', borderColor: '#ffd600', color: '#000' },         // yellow
+                    item.col3 === 'น้ำน้อยวิกฤต' && { backgroundColor: '#ff9800', borderColor: '#ff9800', color: '#fff' },   // orange
+                  ]}
+                >
+                  {item.col3}
+                </ThemedText>
                 <ThemedText style={styles.tableCell}>{item.col4}</ThemedText>
               </View>
             )}
@@ -292,11 +315,12 @@ const styles = StyleSheet.create({
   },
   tableRow: {
     flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
     paddingVertical: 12,
-    paddingHorizontal: 8,
-    alignItems: 'center',
+    paddingHorizontal: 0, // Remove horizontal padding for full width
   },
   tableHeader: {
     backgroundColor: '#1976d2',
@@ -311,7 +335,8 @@ const styles = StyleSheet.create({
     borderStartWidth: 1,
     borderStartColor: '#e3f2fd',
     paddingVertical: 4,
-    paddingHorizontal: 2,
+    paddingHorizontal: 0, // Remove horizontal padding for full width
+    minWidth: 0, // Allow shrinking
   },
   tableCellHeader: {
     fontWeight: 'bold',
@@ -326,17 +351,41 @@ const styles = StyleSheet.create({
     borderStartWidth: 0,
   },
   col3Cell: {
+    flex: 1,
     backgroundColor: '#ffe082',
     borderColor: '#ffe082',
     borderWidth: 1,
     borderRadius: 6,
     overflow: 'hidden',
     fontSize: 13,
-    marginHorizontal: 8,
+    marginHorizontal: 0,
     textAlign: 'center',
     paddingVertical: 4,
-    paddingHorizontal: 3,
+    paddingHorizontal: 0,
     fontWeight: 'bold',
-    minWidth: 45,
+    minWidth: 0,
+  },
+  chipScroll: {
+    marginVertical: 12,
+    marginHorizontal: 8,
+  },
+  chip: {
+    backgroundColor: '#e3f2fd',
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 18,
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#1976d2',
+  },
+  chipActive: {
+    backgroundColor: '#1976d2',
+  },
+  chipText: {
+    color: '#1976d2',
+    fontWeight: '600',
+  },
+  chipTextActive: {
+    color: '#fff',
   },
 });

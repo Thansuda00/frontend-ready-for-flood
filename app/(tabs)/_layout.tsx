@@ -1,83 +1,77 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { Ionicons } from '@expo/vector-icons'; // Add this import
+import { Ionicons } from '@expo/vector-icons';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#2196f3',
         headerShown: false,
-        // tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          android: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute'
-          },
-          default: {
-            borderRadius: 8,
-            backgroundColor: '#aed3f1ff', // background color
-
-          },
-        }),
-      }}>
+        tabBarActiveTintColor: '#1976d2',
+        tabBarInactiveTintColor: '#90caf9',
+        tabBarShowLabel: true,
+        tabBarStyle: {
+          height: 64,
+          borderTopLeftRadius: 18,
+          borderTopRightRadius: 18,
+          backgroundColor: 'transparent',
+          position: 'absolute',
+          left: 10,
+          right: 10,
+          bottom: 10,
+          elevation: 10,
+          shadowColor: '#2196f3',
+          shadowOpacity: 0.13,
+          shadowRadius: 12,
+          shadowOffset: { width: 0, height: 2 },
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginBottom: 4,
+        },
+        tabBarIconStyle: {
+          marginTop: 6,
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'ข้อมูลน้ำระดับจังหวัด',
-          tabBarIcon: ({ color }) => <Ionicons size={15} name="rainy" color={color} />,
-          tabBarLabelStyle: {
-            fontSize: 8, // smaller font size
-            marginTop: 1, // bottom margin
-            // You can also use marginHorizontal or margin for all sides
-          },
+          title: 'ข้อมูลน้ำ',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'rainy' : 'rainy-outline'} size={22} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="chatbot"
         options={{
-          title: 'แชทกับเรา',
-          tabBarIcon: ({ color }) => <Ionicons size={15} name="chatbubbles" color={color} />,
-          tabBarLabelStyle: {
-            fontSize: 8, // smaller font size
-            marginTop: 1, // bottom margin\]\
-            // You can also use marginHorizontal or margin for all sides
-          },
+          title: 'แชทบอท',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'chatbubbles' : 'chatbubbles-outline'} size={22} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="floodGuide"
         options={{
-          title: 'คำแนะนำรับมือภัยน้ำท่วม',
-          tabBarIcon: ({ color }) => <Ionicons name="document-text" size={15} color={color} />,
-          tabBarLabelStyle: {
-            fontSize: 8, // smaller font size
-            marginTop: 1, // bottom margin\]\
-            // You can also use marginHorizontal or margin for all sides
-          },
+          title: 'คู่มือ',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'book' : 'book-outline'} size={22} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="emergencyContacts"
         options={{
-          title: 'ติดต่อฉุกเฉิน',
-          tabBarIcon: ({ color }) => <Ionicons name="alert-circle" size={18} color={color} />
-          ,
-          tabBarLabelStyle: {
-            fontSize: 8, // smaller font size
-            marginTop: 1, // bottom margin\]\
-            // You can also use marginHorizontal or margin for all sides
-          },
+          title: 'ฉุกเฉิน',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'call' : 'call-outline'} size={24} color={color} />
+          ),
         }}
       />
     </Tabs>
