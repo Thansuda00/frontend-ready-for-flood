@@ -7,6 +7,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Ionicons } from '@expo/vector-icons'; // Add this import
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -21,16 +22,9 @@ export default function RootLayout() {
         tabBarStyle: Platform.select({
           android: {
             // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-            marginHorizontal: 16, // left and right margin
-            marginBottom: 16,     // bottom margin
-            marginTop: 8,         // top margin
-            borderRadius: 12,     // optional: rounded corners
+            position: 'absolute'
           },
           default: {
-            marginHorizontal: 16,
-            marginBottom: 16,
-            marginTop: 16,
             borderRadius: 8,
             backgroundColor: '#aed3f1ff', // background color
 
@@ -40,8 +34,8 @@ export default function RootLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'หน้าแรก',
-          tabBarIcon: ({ color }) => <IconSymbol size={15} name="house.fill" color={color} />,
+          title: 'ข้อมูลน้ำระดับจังหวัด',
+          tabBarIcon: ({ color }) => <Ionicons size={15} name="rainy" color={color} />,
           tabBarLabelStyle: {
             fontSize: 8, // smaller font size
             marginTop: 1, // bottom margin
@@ -53,7 +47,7 @@ export default function RootLayout() {
         name="explore"
         options={{
           title: 'แชทกับเรา',
-          tabBarIcon: ({ color }) => <IconSymbol size={15} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons size={15} name="chatbubbles" color={color} />,
           tabBarLabelStyle: {
             fontSize: 8, // smaller font size
             marginTop: 1, // bottom margin\]\
@@ -65,7 +59,7 @@ export default function RootLayout() {
         name="floodGuide"
         options={{
           title: 'คำแนะนำรับมือภัยน้ำท่วม',
-          tabBarIcon: ({ color }) => <IconSymbol size={15} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="document-text" size={15} color={color} />,
           tabBarLabelStyle: {
             fontSize: 8, // smaller font size
             marginTop: 1, // bottom margin\]\
@@ -77,7 +71,8 @@ export default function RootLayout() {
         name="emergencyContacts"
         options={{
           title: 'ติดต่อฉุกเฉิน',
-          tabBarIcon: ({ color }) => <IconSymbol size={15} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="alert-circle" size={18} color={color} />
+          ,
           tabBarLabelStyle: {
             fontSize: 8, // smaller font size
             marginTop: 1, // bottom margin\]\
