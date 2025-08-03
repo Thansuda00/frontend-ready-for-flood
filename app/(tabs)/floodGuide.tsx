@@ -47,7 +47,7 @@ export default function FloodGuideTips() {
           <Ionicons
             name="water-sharp"
             size={44}
-            color="#1976d2"
+            color="#ffffffff"
             style={styles.headerWaterIcon}
           />
           <View style={styles.headerTextBox}>
@@ -121,20 +121,19 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   headerTitle: {
-    color: '#1976d2',
+    color: '#ffffffff',
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 2,
-    textShadowColor: '#fff',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
   },
   headerSubtitle: {
-    color: '#1976d2',
+    color: '#ffffffff',
     fontSize: 15,
     opacity: 0.85,
     fontWeight: '500',
     marginTop: 2,
+    marginLeft: 2,
+    marginRight: 2,
   },
   headerWaterIcon: {
     marginLeft: 12,

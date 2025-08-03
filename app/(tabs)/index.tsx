@@ -1,10 +1,10 @@
 import { Image } from 'expo-image';
-import { FlatList, StyleSheet, View, Button, Modal, ScrollView, TouchableOpacity } from 'react-native';
+import { Linking, TouchableOpacity, View, Modal, ScrollView, FlatList, StyleSheet } from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
-import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState } from 'react';
+import Carousel from 'react-native-reanimated-carousel'; // Install if not yet: yarn add react-native-reanimated-carousel
 
 const tableHeader = ['สถานี', 'ระดับน้ำ (ม.รทก)', 'สถานการณ์น้ำ', 'เวลา'];
 const allTableData = [
@@ -66,6 +66,21 @@ const dropdownOptions = [
   { label: 'อำเภอป่าแดด', value: 5 },
 ];
 
+// Banner images
+const bannerImages = [
+  require('@/assets/banners/banner1.jpg'),
+  require('@/assets/banners/banner2.jpg'),
+  require('@/assets/banners/banner3.jpg'),
+];
+
+// Links for each banner (must match order/length of bannerImages)
+const bannerLinks = [
+  'https://line.me/R/ti/p/@firstLineOA',
+  'https://www.facebook.com/profile.php?id=6157604461323',
+  'https://www.google.com',
+];
+
+
 export default function HomeScreen() {
   const [selectedDataIndex, setSelectedDataIndex] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
@@ -90,11 +105,11 @@ export default function HomeScreen() {
         headerImage={
           <View style={styles.headerRow}>
             <Image
-              source={require('@/assets/images/44616-removebg-preview.png')}
-              style={styles.reactLogo}
+              source={require('@/assets/images/app-icon.png')} // Add your app-icon.png here
+              style={styles.headerIcon}
             />
             <ThemedText style={styles.headerTitle}>
-              น้ำท่วมเราพร้อม!
+              น้ำท่วมเราพร้อม
             </ThemedText>
           </View>
         }
@@ -116,10 +131,56 @@ export default function HomeScreen() {
                   <ThemedText>เวลา: {row.col4}</ThemedText>
                 </View>
               ))}
-              <Button title="ปิด" onPress={() => setModalVisible(false)} />
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#0c0c0cff',
+                  paddingVertical: 10,
+                  paddingHorizontal: 28,
+                  borderRadius: 14,
+                  marginTop: 10,
+                }}
+                onPress={() => setModalVisible(false)}
+              >
+                <ThemedText style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
+                  ปิด
+                </ThemedText>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
+
+        {/* Slide Banner */}
+        <View style={styles.bannerContainer}>
+          <Carousel
+            width={320}
+            height={120}
+            autoPlay
+            autoPlayInterval={3000}
+            data={bannerImages}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={() => Linking.openURL(bannerLinks[index])}
+                style={{ flex: 1 }}
+              >
+                <Image
+                  source={item}
+                  style={styles.bannerImage}
+                  contentFit="cover"
+                  transition={300}
+                />
+              </TouchableOpacity>
+            )}
+            loop
+          />
+        </View>
+
+        <ThemedText style={styles.infoText}>
+          ข้อมูลสถานีวัดระดับน้ำในพื้นที่ <ThemedText style={styles.infoHighlight}>{dropdownOptions[selectedDataIndex].label}</ThemedText>
+          {'\n'}ณ วันที่ {new Date().getDate()} {getThaiMonthName(new Date())} {new Date().getFullYear() + 543}
+          {' '}เวลา {new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })} น.
+        </ThemedText>
+
         <View style={styles.chipScroll}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {dropdownOptions.map(option => (
@@ -143,12 +204,6 @@ export default function HomeScreen() {
             ))}
           </ScrollView>
         </View>
-
-        <ThemedText style={styles.infoText}>
-          ข้อมูลสถานีวัดระดับน้ำในพื้นที่ <ThemedText style={styles.infoHighlight}>{dropdownOptions[selectedDataIndex].label}</ThemedText>
-          {'\n'}ณ วันที่ {new Date().getDate()} {getThaiMonthName(new Date())} {new Date().getFullYear() + 543}
-          {' '}เวลา {new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })} น.
-        </ThemedText>
 
         <View style={styles.tableContainer}>
           {/* Header Row */}
@@ -191,6 +246,17 @@ export default function HomeScreen() {
             )}
           />
         </View>
+
+        {/* Reference Link */}
+        <TouchableOpacity
+          onPress={() => Linking.openURL('https://chiangrai.thaiwater.net/wl')}
+          style={styles.referenceLink}
+        >
+          <ThemedText style={styles.referenceText}>
+            ข้อมูลเพิ่มเติม: https://chiangrai.thaiwater.net/wl
+          </ThemedText>
+        </TouchableOpacity>
+
       </ParallaxScrollView>
     </View>
   );
@@ -209,23 +275,27 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start', // <-- Aligns content to the left
     paddingTop: 30,
     paddingBottom: 10,
     gap: 12,
   },
-  reactLogo: {
-    height: 50,
-    width: 50,
-    marginRight: 12,
+  headerIcon: {
+    width: 80,
+    height: 80,
+    marginBottom: 10,
+    borderRadius: 100, // Makes the image circular
+    shadowColor: '#000', // Shadow color
+    shadowOffset: { width: 0, height: 4 }, // Offset for the shadow
+    shadowOpacity: 0.6, // Shadow transparency
+    shadowRadius: 30, // Blur radius for the shadow
+    elevation: 8, // Android shadow
   },
   headerTitle: {
-    color: '#1976d2',
+    color: '#ffffffff',
     fontSize: 22,
     fontWeight: 'bold',
-    textShadowColor: '#fff',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
+    textAlign: 'justify',
   },
   modalOverlay: {
     flex: 1,
@@ -289,7 +359,6 @@ const styles = StyleSheet.create({
   },
   infoText: {
     marginTop: 14,
-    marginBottom: 14,
     textAlign: "center",
     fontSize: 15,
     color: '#333',
@@ -309,7 +378,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: '#fff',
     elevation: 2,
-    marginBottom: 24,
+    marginBottom: 45,
   },
   tableRow: {
     flexDirection: 'row',
@@ -364,7 +433,7 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   chipScroll: {
-    marginVertical: 12,
+    marginVertical: 8,
     marginHorizontal: 8,
   },
   chip: {
@@ -386,4 +455,26 @@ const styles = StyleSheet.create({
   chipTextActive: {
     color: '#fff',
   },
+
+  bannerContainer: {
+    marginTop: 5,
+    alignItems: 'center',
+  },
+  bannerScroll: {
+    width: '100%',
+    height: 120,
+  },
+  bannerImage: {
+    width: 320,
+    height: 120,
+  },
+
+  referenceLink: {
+    marginBottom: 60,
+    alignSelf: 'center',
+  },
+  referenceText: {
+    color: '#7d7d7dff',
+    fontSize: 14,
+    textAlign: 'center',},
 });

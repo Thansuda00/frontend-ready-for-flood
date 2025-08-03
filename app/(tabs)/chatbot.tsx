@@ -8,7 +8,7 @@ import { FlatList, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity
 
 const QUESTION_GROUPS = [
   {
-    icon: 'rainy-outline',
+    icon: 'rainy',
     label: 'น้ำจะมารึยัง (สถานการณ์น้ำปัจจุบัน)',
     questions: [
       "แถวบ้านจะท่วมไหม?",
@@ -36,7 +36,7 @@ const QUESTION_GROUPS = [
     ],
   },
   {
-    icon: 'notifications-outline',
+    icon: 'notifications',
     label: 'แจ้งเตือนยังไง? (ระบบเตือนภัย)',
     questions: [
       "แอปมันเตือนยังไงอ่ะ?",
@@ -52,7 +52,7 @@ const QUESTION_GROUPS = [
     ],
   },
   {
-    icon: 'briefcase-outline',
+    icon: 'briefcase',
     label: 'จะหนีไปไหน? (การอพยพและช่วยเหลือ)',
     questions: [
       // การอพยพและช่วยเหลือ
@@ -128,6 +128,43 @@ const QUESTION_GROUPS = [
   },
 ];
 
+// Add this mapping for mock answers
+const MOCK_ANSWERS: Record<string, string> = {
+  "แถวบ้านจะท่วมไหม?": "ขณะนี้ยังไม่มีรายงานน้ำท่วมในพื้นที่ของคุณค่ะ",
+  "น้ำจะท่วมบ้านเราไหม?": "ระบบกำลังติดตามสถานการณ์น้ำอย่างใกล้ชิด หากมีความเสี่ยงจะแจ้งเตือนทันทีค่ะ",
+  "น้ำเริ่มขึ้นหรือยังอ่ะ?": "ระดับน้ำยังอยู่ในเกณฑ์ปกติค่ะ",
+  "เขาบอกว่าน้ำมาจริงมั้ย?": "ข้อมูลล่าสุดยังไม่พบสัญญาณน้ำหลากในพื้นที่นี้ค่ะ",
+  "น้ำมาถึงไหนแล้ว?": "น้ำยังไม่ถึงเขตบ้านของคุณค่ะ",
+  "บ้านฉันเสี่ยงน้ำท่วมมั้ย?": "พื้นที่ของคุณอยู่ในโซนเฝ้าระวังแต่ยังไม่มีสัญญาณอันตรายค่ะ",
+  "ตอนนี้แถวนี้น้ำลึกกี่เซนต์แล้ว?": "ระดับน้ำล่าสุด 15 เซนติเมตรค่ะ",
+  "ฝนจะตกอีกนานไหม?": "คาดว่าฝนจะหยุดตกในอีก 2 ชั่วโมงข้างหน้าค่ะ",
+  "ฝนตกหนักขนาดนี้ น้ำจะขึ้นไหม?": "ยังไม่มีแนวโน้มว่าน้ำจะขึ้นสูงผิดปกติค่ะ",
+  "ท่วมหนักเหมือนปีก่อนไหม?": "ปีนี้สถานการณ์น้ำยังไม่รุนแรงเท่าปีก่อนค่ะ",
+  "น้ำตรงคลองมันจะล้นเมื่อไหร่?": "คาดว่าระดับน้ำยังไม่ถึงจุดล้นคลองใน 24 ชั่วโมงนี้ค่ะ",
+  "จะต้องย้ายของขึ้นที่สูงยัง?": "ยังไม่จำเป็นต้องย้ายของขึ้นที่สูงในขณะนี้ค่ะ",
+  "ถนนสายนี้ขับผ่านได้อยู่มั้ย?": "ถนนสายนี้ยังสามารถสัญจรได้ตามปกติค่ะ",
+  "น้ำจะเข้าเขตนี้อีกกี่วัน?": "ยังไม่มีข้อมูลว่าน้ำจะเข้ามาในเขตนี้ค่ะ",
+  "น้ำลดหรือยัง?": "ระดับน้ำเริ่มลดลงแล้วค่ะ",
+  "ปลอดภัยรึยัง": "ขณะนี้สถานการณ์ปลอดภัยค่ะ",
+  "เข้าขั้นเฝ้าระวังหรือวิกฤตรึยัง?": "ยังอยู่ในขั้นเฝ้าระวัง ยังไม่ถึงขั้นวิกฤติค่ะ",
+  "ที่นี่น้ำท่วมทุกปีเลย รอบนี้หนักมั้ย?": "ปีนี้คาดว่าสถานการณ์จะเบากว่าปีก่อนค่ะ",
+  "น้ำท่วมหน้าบ้านฉันคนอื่นแจ้งรึยัง?": "ยังไม่มีรายงานน้ำท่วมจากผู้ใช้งานในพื้นที่นี้ค่ะ",
+  "มีหน่วยงานไหนช่วยเราได้บ้าง?": "สามารถติดต่อหน่วยงานป้องกันและบรรเทาสาธารณภัย โทร 1784 ได้ค่ะ",
+  "ท่วมถึงบ้านชั้นเดียวไหม?": "ขณะนี้ระดับน้ำยังไม่ถึงบ้านชั้นเดียวค่ะ",
+  "ดูได้ยังว่าน้ำจะมาทางไหน?": "สามารถดูแผนที่น้ำท่วมในแอปได้เลยค่ะ",
+  "แอปมันเตือนยังไงอ่ะ?": "แอปจะแจ้งเตือนผ่าน Notification เมื่อมีเหตุการณ์สำคัญค่ะ",
+  "ทำไมไม่เห็นเตือนเลย?": "โปรดตรวจสอบการตั้งค่าการแจ้งเตือนในแอปและมือถือค่ะ",
+  "มันจะเตือนทันก่อนน้ำมามั้ย?": "ระบบจะพยายามแจ้งเตือนล่วงหน้าทันทีที่มีข้อมูลค่ะ",
+  "เปิดเสียงเตือนตรงไหน?": "สามารถตั้งค่าเสียงเตือนได้ที่เมนูการตั้งค่าในแอปค่ะ",
+  "ต้องกดตรงไหนถึงจะรู้ข่าว?": "สามารถดูข่าวสารได้ที่หน้าแรกของแอปค่ะ",
+  "ตั้งให้เตือนเฉพาะหมู่บ้านฉันได้มั้ย?": "สามารถเลือกพื้นที่ที่ต้องการรับแจ้งเตือนได้ในเมนูตั้งค่าค่ะ",
+  "ถ้าไม่มีเน็ต มันจะยังเตือนมั้ย?": "หากไม่มีอินเทอร์เน็ตจะไม่ได้รับการแจ้งเตือนค่ะ",
+  "ทำไมแจ้งเตือนช้า?": "อาจเกิดจากสัญญาณอินเทอร์เน็ตหรือการประมวลผลข้อมูลล่าช้าค่ะ",
+  "ดูย้อนหลังได้ไหมว่ามีเตือนไรบ้าง?": "สามารถดูประวัติการแจ้งเตือนได้ในเมนูประวัติค่ะ",
+  "ต้องเปิดแอปไว้ตลอดเลยเหรอ?": "ไม่จำเป็นต้องเปิดแอปตลอด ระบบจะแจ้งเตือนอัตโนมัติค่ะ",
+  // ...add more mock answers for other questions as needed...
+};
+
 export default function ChatBot() {
   const [messages, setMessages] = useState([
     { id: '1', text: 'สวัสดีครับ Ai จากน้องต้นน้ำ พี่ๆ สามารถพูดคุยกับน้องต้นน้ำ ได้เลย  น้องพร้อมให้ข้อมูลแล้ว', from: 'bot' }
@@ -143,11 +180,14 @@ export default function ChatBot() {
       { id: Date.now().toString(), text: msg, from: 'user' }
     ]);
     setInput('');
-    // Simulate bot reply
     setTimeout(() => {
       setMessages(msgs => [
         ...msgs,
-        { id: (Date.now() + 1).toString(), text: 'ขอบคุณที่ติดต่อมา! ระบบจะตอบกลับเร็วๆ นี้', from: 'bot' }
+        {
+          id: (Date.now() + 1).toString(),
+          text: MOCK_ANSWERS[msg] || "ขออภัย ขณะนี้ยังไม่มีข้อมูลสำหรับคำถามนี้ค่ะ",
+          from: 'bot'
+        }
       ]);
     }, 800);
   };
@@ -164,7 +204,7 @@ export default function ChatBot() {
           <Ionicons
             name="chatbubbles"
             size={44}
-            color="#1976d2"
+            color="#ffffffff"
             style={styles.chatbubblesIcon}
           />
           <View style={styles.headerTextBox}>
@@ -225,7 +265,7 @@ export default function ChatBot() {
           <View key={groupIdx} style={{ marginBottom: 10 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
               <Ionicons name={group.icon as any} size={18} color="#1976d2" style={{ marginRight: 6 }} />
-              <ThemedText style={{ color: '#000000ff', fontWeight: 'bold', fontSize: 15 }}>
+              <ThemedText style={{ color: '#1976d2', fontWeight: 'bold', fontSize: 15 }}>
                 {group.label}
               </ThemedText>
             </View>
@@ -264,20 +304,18 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   headerTitle: {
-    color: '#1976d2',
+    color: '#ffffffff',
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 2,
-    textShadowColor: '#fff',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
   },
   headerSubtitle: {
-    color: '#1976d2',
+    color: '#ffffffff',
     fontSize: 15,
     opacity: 0.85,
     fontWeight: '500',
     marginTop: 2,
+    marginLeft: 2,
+    marginRight: 2,
   },
 
   headerImage: {
@@ -296,7 +334,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   titleText: {
-    color: '#1976d2',
+    color: '#ffffffff',
     fontWeight: 'bold',
     fontSize: 20,
   },
@@ -312,6 +350,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
+    margin: 16,
   },
   bubble: {
     maxWidth: '80%',
@@ -380,6 +419,7 @@ const styles = StyleSheet.create({
   suggestedContainer: {
     paddingHorizontal: 8,
     paddingBottom: 16,
+        marginBottom: 45,
   },
   suggestedChip: {
     backgroundColor: '#ffffffff',

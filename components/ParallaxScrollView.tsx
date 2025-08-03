@@ -57,8 +57,7 @@ export default function ParallaxScrollView({
           style={[
             styles.header,
             {
-              backgroundColor: colorScheme === 'light' ? '#e3f2fd' : '#1D3D47',
-              shadowColor: colorScheme === 'light' ? '#1976d2' : '#000',
+              backgroundColor: colorScheme === 'light' ? '#326a95' : '#1D3D47',
               ...Platform.select({
                 ios: {
                   shadowOffset: { width: 0, height: 4 },
@@ -66,6 +65,7 @@ export default function ParallaxScrollView({
                 },
                 android: {
                   elevation: 8,
+                  borderRadius: 16,
                 },
               }),
             },
@@ -75,20 +75,6 @@ export default function ParallaxScrollView({
           <View style={styles.headerContent}>
             {headerImage}
           </View>
-          {/* Decorative SVG wave at the bottom of the header */}
-          <Svg
-            height={36}
-            width="100%"
-            viewBox="0 0 360 36"
-            style={styles.wave}
-            preserveAspectRatio="none"
-          >
-            <Path
-              d="M0 18 Q90 36 180 18 T360 18 V36 H0 Z"
-              fill={colorScheme === 'light' ? '#e3f2fd' : '#1D3D47'}
-              opacity={0.95}
-            />
-          </Svg>
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
       </Animated.ScrollView>
@@ -102,40 +88,31 @@ const styles = StyleSheet.create({
   },
   header: {
     height: HEADER_HEIGHT,
-    overflow: 'visible',
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
-    marginHorizontal: 10,
+    overflow: 'hidden', // Ensure the radius is applied correctly
     marginTop: Platform.OS === 'ios' ? 8 : 0,
-    marginBottom: 8,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    shadowOpacity: 0.12,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 8,
+    justifyContent: 'center', // Center content vertically
+    alignItems: 'center', // Center content horizontally
     position: 'relative',
+    borderBottomLeftRadius: 20, // Add bottom left radius
+    borderBottomRightRadius: 20, // Add bottom right radius
+    marginLeft: 20,
+    marginRight: 20,
   },
   headerContent: {
     flex: 1,
     width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center', // Center content horizontally
+    justifyContent: 'center', // Center content vertically
     paddingTop: 18,
-    paddingBottom: 0,
+    paddingBottom: 18, // Add padding to center content better
+    marginHorizontal: 'auto', // Center horizontally if applicable
     zIndex: 2,
-  },
-  wave: {
-    position: 'absolute',
-    bottom: -1,
-    left: 0,
-    right: 0,
-    zIndex: 1,
   },
   content: {
     flex: 1,
     padding: 24,
     gap: 16,
     overflow: 'visible',
+    marginRight: 20,
   },
 });

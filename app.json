@@ -37,6 +37,13 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "fonts": {
+      "Kanit-Regular": "./assets/fonts/Kanit-Regular.ttf",
+      "Kanit-Bold": "./assets/fonts/Kanit-Bold.ttf"
     }
   }
 }

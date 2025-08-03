@@ -1,22 +1,22 @@
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
-import { Image } from 'expo-image';
 import React from 'react';
-import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
 
-export default function HomeScreen() {
+export default function EmergencyContactsScreen() {
   const phoneNumber = '1784';
+  const facebookUrl = 'https://www.facebook.com/profile.php?id=61576044613232';
+  const lineUrl = 'https://line.me/R/ti/p/@769btwlv';
 
   return (
     <ParallaxScrollView
       headerImage={
         <View style={styles.headerRow}>
-         <Ionicons
+          <Ionicons
             name="alert-circle"
             size={44}
-            color="#e53935"
+            color="#ffffffff"
             style={styles.headerAlertIcon}
           />
           <View style={styles.headerTextBox}>
@@ -25,16 +25,12 @@ export default function HomeScreen() {
               เบอร์สายด่วนกรมป้องกันและบรรเทาสาธารณภัย 24 ชั่วโมง
             </ThemedText>
           </View>
- 
         </View>
       }
     >
-      <ThemedView style={styles.titleContainer}>
-        <Ionicons name="alert-circle" size={26} color="#e53935" style={{ marginRight: 8 }} />
-        <ThemedText type="title" style={styles.titleText}>ติดต่อฉุกเฉิน!</ThemedText>
-      </ThemedView>
-
+      {/* Emergency Phone Section */}
       <View style={styles.card}>
+        <Ionicons name="call" size={40} color="#e53935" style={styles.icon} />
         <ThemedText style={styles.title}>
           เบอร์โทรสายด่วน {phoneNumber}
         </ThemedText>
@@ -42,13 +38,47 @@ export default function HomeScreen() {
           จากกรมป้องกันและบรรเทาสาธารณภัย
         </ThemedText>
         <Pressable
-          style={styles.button}
+          style={[styles.button, styles.phoneButton]}
           onPress={() => Linking.openURL(`tel:${phoneNumber}`)}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <Ionicons name="call" size={20} color="#fff" style={{ marginRight: 10 }} />
-            <ThemedText style={styles.buttonText}>โทร {phoneNumber}</ThemedText>
+          <ThemedText style={styles.buttonText}>โทร {phoneNumber}</ThemedText>
+        </Pressable>
+      </View>
+
+      {/* Social Contacts Section */}
+      <View style={styles.card}>
+        <Ionicons name="chatbubbles" size={40} color="#06C755" style={styles.icon} />
+        <ThemedText style={styles.title}>
+          ช่องทางติดต่อออนไลน์
+        </ThemedText>
+
+        {/* Facebook Contact */}
+        <Pressable
+          style={[styles.button, styles.facebookButton]}
+          onPress={() => Linking.openURL(facebookUrl)}
+        >
+          <View style={styles.socialRow}>
+            <Ionicons name="logo-facebook" size={24} color="#fff" style={styles.socialIcon} />
+            <ThemedText style={styles.buttonText}>Facebook</ThemedText>
           </View>
+          <ThemedText style={styles.socialSubtitle}>
+            น้ำท่วมเราพร้อม
+          </ThemedText>
+        </Pressable>
+
+        {/* LINE Contact */}
+        <Pressable
+          style={[styles.button, styles.lineButton]}
+          onPress={() => Linking.openURL(lineUrl)}
+        >
+          <View style={styles.socialRow}>
+            <Ionicons name="logo-wechat" size={24} color="#fff" style={styles.socialIcon} />
+            <ThemedText style={styles.buttonText}>LINE</ThemedText>
+          </View>
+          <Image
+            source={require('@/assets/images/line-qr-contact.jpg')}
+            style={styles.qrImage}
+          />
         </Pressable>
       </View>
     </ParallaxScrollView>
@@ -56,18 +86,38 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
-    marginTop: 18,
-    marginBottom: 8,
+    paddingTop: 36,
+    paddingBottom: 18,
+    gap: 18,
+    backgroundColor: 'rgba(255,255,255,0.0)',
   },
-  titleText: {
-    color: '#e53935',
+  headerTextBox: {
+    flex: 1,
+    justifyContent: 'center',
+    marginLeft: 12,
+  },
+  headerTitle: {
+    color: '#ffffffff',
+    fontSize: 24,
     fontWeight: 'bold',
-    fontSize: 22,
+    marginBottom: 2,
+  },
+  headerSubtitle: {
+    color: '#ffffffff',
+    fontSize: 13,
+    opacity: 0.85,
+    fontWeight: '500',
+    marginTop: 2,
+    marginLeft: 2,
+    marginRight: 7,
+  },
+  headerAlertIcon: {
+    marginLeft: 12,
+    opacity: 0.92,
   },
   card: {
     backgroundColor: '#fff',
@@ -76,10 +126,13 @@ const styles = StyleSheet.create({
     margin: 18,
     alignItems: 'center',
     elevation: 3,
-    shadowColor: '#e53935',
-    shadowOpacity: 0.08,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
+  },
+  icon: {
+    marginBottom: 12,
   },
   title: {
     fontSize: 22,
@@ -95,14 +148,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#e53935',
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 32,
     marginTop: 8,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     elevation: 2,
+  },
+  phoneButton: {
+    backgroundColor: '#e53935',
+  },
+  facebookButton: {
+    backgroundColor: '#1877f2',
+    marginTop: 16,
+  },
+  lineButton: {
+    backgroundColor: '#06C755',
+    marginTop: 16,
   },
   buttonText: {
     color: '#fff',
@@ -110,49 +173,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.5,
   },
-  headerRow: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  paddingTop: 36,
-  paddingBottom: 18,
-  gap: 18,
-  backgroundColor: 'rgba(255,255,255,0.0)',
-},
-headerTextBox: {
-  flex: 1,
-  justifyContent: 'center',
-  marginLeft: 12,
-},
-headerTitle: {
-  color: '#e53935',
-  fontSize: 24,
-  fontWeight: 'bold',
-  marginBottom: 2,
-  textShadowColor: '#fff',
-  textShadowOffset: { width: 1, height: 1 },
-  textShadowRadius: 2,
-},
-headerSubtitle: {
-  color: '#e53935',
-  fontSize: 15,
-  opacity: 0.85,
-  fontWeight: '500',
-  marginTop: 2,
-},
-headerAlertIcon: {
-  marginLeft: 12,
-  opacity: 0.92,
-},
-reactLogo: {
-  height: 64,
-  width: 64,
-  marginRight: 0,
-  borderRadius: 16,
-  shadowColor: '#e53935',
-  shadowOpacity: 0.12,
-  shadowRadius: 8,
-  shadowOffset: { width: 0, height: 2 },
-},
+  socialRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  socialIcon: {
+    marginRight: 8,
+  },
+  socialSubtitle: {
+    color: '#fff',
+    fontSize: 14,
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  qrImage: {
+    width: 100,
+    height: 100,
+    marginTop: 12,
+    borderRadius: 8,
+  },
 });
 

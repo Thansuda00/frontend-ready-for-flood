@@ -3,6 +3,7 @@ import React from 'react';
 
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Ionicons } from '@expo/vector-icons';
+import { Linking } from 'react-native';
 
 export default function RootLayout() {
   return (
@@ -50,7 +51,7 @@ export default function RootLayout() {
       <Tabs.Screen
         name="chatbot"
         options={{
-          title: 'แชทบอท',
+          title: 'แชทกับน้องต้นน้ำ',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'chatbubbles' : 'chatbubbles-outline'} size={22} color={color} />
           ),
@@ -71,6 +72,21 @@ export default function RootLayout() {
           title: 'ฉุกเฉิน',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'call' : 'call-outline'} size={24} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="weatherWeb"
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            Linking.openURL('https://tmd.go.th/forecast/daily');
+          },
+        }}
+        options={{
+          title: 'พยากรณ์อากาศ',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'cloudy' : 'cloudy-outline'} size={22} color={color} />
           ),
         }}
       />
