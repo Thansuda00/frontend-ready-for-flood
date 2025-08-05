@@ -176,15 +176,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   container: {
-    margin: 12,
-    backgroundColor: '#f5fafd',
+    marginLeft: 20,
+    marginRight: 10,
     borderRadius: 20,
     padding: 18,
-    shadowColor: '#1976d2',
-    shadowOpacity: 0.09,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
   },
   sectionBlock: {
     marginBottom: 22,
@@ -220,7 +215,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
     ebookContainer: {
-    marginHorizontal: 12,
+    marginTop: 5,
+    marginLeft: 20,
+    marginRight: 10,
     marginVertical: 12,
     alignItems: 'center',
     justifyContent: 'center',
