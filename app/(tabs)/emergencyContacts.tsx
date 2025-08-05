@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     opacity: 0.85,
     fontWeight: '500',
     marginTop: 2,
-    marginLeft: 2,
+    marginLeft: 5,
     marginRight: 7,
   },
   headerAlertIcon: {

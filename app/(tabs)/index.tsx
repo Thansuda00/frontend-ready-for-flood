@@ -1,8 +1,9 @@
 import { Image } from 'expo-image';
-import { Linking, TouchableOpacity, View, Modal, ScrollView, FlatList, StyleSheet } from 'react-native';
+import { FlatList, Linking, Modal, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
+import notificationService from '@/services/NotificationService';
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-native-reanimated-carousel'; // Install if not yet: yarn add react-native-reanimated-carousel
 
@@ -75,9 +76,9 @@ const bannerImages = [
 
 // Links for each banner (must match order/length of bannerImages)
 const bannerLinks = [
-  'https://line.me/R/ti/p/@firstLineOA',
   'https://www.facebook.com/profile.php?id=6157604461323',
-  'https://www.google.com',
+  'https://line.me/R/ti/p/@firstLineOA',
+  ''
 ];
 
 
@@ -109,7 +110,7 @@ export default function HomeScreen() {
               style={styles.headerIcon}
             />
             <ThemedText style={styles.headerTitle}>
-              น้ำท่วมเราพร้อม
+              น้ำท่วมเราพร้อม!
             </ThemedText>
           </View>
         }
@@ -152,8 +153,8 @@ export default function HomeScreen() {
         {/* Slide Banner */}
         <View style={styles.bannerContainer}>
           <Carousel
-            width={320}
-            height={120}
+            width={360}
+            height={200} // Adjusted height for consistency
             autoPlay
             autoPlayInterval={3000}
             data={bannerImages}
@@ -458,15 +459,22 @@ const styles = StyleSheet.create({
 
   bannerContainer: {
     marginTop: 5,
+    marginLeft: 10,
+    marginRight: 10,
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: 200, // Adjusted height for consistency
+    overflow: 'hidden',
+    borderRadius: 12,
   },
   bannerScroll: {
     width: '100%',
     height: 120,
   },
   bannerImage: {
-    width: 320,
-    height: 120,
+    width: '100%',
+    height: '100%',
   },
 
   referenceLink: {
@@ -476,5 +484,6 @@ const styles = StyleSheet.create({
   referenceText: {
     color: '#7d7d7dff',
     fontSize: 14,
-    textAlign: 'center',},
+    textAlign: 'center',
+  },
 });

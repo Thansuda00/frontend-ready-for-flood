@@ -4,7 +4,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native';
 
 const floodGuideSections = [
   {
@@ -60,7 +60,20 @@ export default function FloodGuideTips() {
           </View>
         </View>
       }
-    >
+    >     
+     {/* E-Book Section */}
+      <TouchableOpacity
+        style={styles.ebookContainer}
+        onPress={() => Linking.openURL('https://heyzine.com/flip-book/79e03b2fd2.html')}
+      >
+        <Image
+          source={require('@/assets/images/e-book-first-page.jpg')}
+          style={styles.ebookImage}
+        />
+        <ThemedText style={styles.ebookText}>
+          คลิกเพื่ออ่านคู่มือรับมือภัยน้ำท่วมฉบับเต็ม
+        </ThemedText>
+      </TouchableOpacity>
 
       <View style={styles.container}>
         {floodGuideSections.map((section, idx) => (
@@ -163,7 +176,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   container: {
-    margin: 16,
+    margin: 12,
     backgroundColor: '#f5fafd',
     borderRadius: 20,
     padding: 18,
@@ -205,5 +218,23 @@ const styles = StyleSheet.create({
     color: '#333',
     lineHeight: 22,
     flex: 1,
+  },
+    ebookContainer: {
+    marginHorizontal: 12,
+    marginVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ebookImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  ebookText: {
+    fontSize: 16,
+    color: '#1976d2',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

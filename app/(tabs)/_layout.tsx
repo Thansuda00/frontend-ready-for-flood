@@ -3,7 +3,7 @@ import React from 'react';
 
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Ionicons } from '@expo/vector-icons';
-import { Linking } from 'react-native';
+import { Linking, Image } from 'react-native';
 
 export default function RootLayout() {
   return (
@@ -52,8 +52,11 @@ export default function RootLayout() {
         name="chatbot"
         options={{
           title: 'แชทกับน้องต้นน้ำ',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'chatbubbles' : 'chatbubbles-outline'} size={22} color={color} />
+          tabBarIcon: () => (
+            <Image
+              source={require('@/assets/images/icon.png')}
+              style={{ width: 40, height: 22 }}
+            />
           ),
         }}
       />
