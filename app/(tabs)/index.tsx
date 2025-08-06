@@ -1,96 +1,68 @@
-import { Image } from 'expo-image';
-import { FlatList, Linking, Modal, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
-import notificationService from '@/services/NotificationService';
+import { fetchData } from '@/services/ApiService';
+import { Image } from 'expo-image';
 import React, { useEffect, useState } from 'react';
-import Carousel from 'react-native-reanimated-carousel'; // Install if not yet: yarn add react-native-reanimated-carousel
+import { FlatList, Linking, Modal, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import Carousel from 'react-native-reanimated-carousel';
 
 const tableHeader = ['สถานี', 'ระดับน้ำ (ม.รทก)', 'สถานการณ์น้ำ', 'เวลา'];
-const allTableData = [
-  [
-    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำล้นตลิ่ง', col4: '08:00 น.' },
-    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำน้อย', col4: '10:00 น.' },
-    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำปกติ', col4: '12:00 น.' },
-    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำน้อยวิกฤต', col4: '09:00 น.' },
-    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำล้นตลิ่ง', col4: '11:00 น.' },
-    { key: '6', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
-    { key: '7', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
-    { key: '8', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
-    { key: '9', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
-    { key: '10', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
-  ],
-  [
-    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
-    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
-    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
-    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
-    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
-  ],
-  [
-    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
-    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
-    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
-    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
-    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
-  ],
-  [
-    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
-    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
-    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
-    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
-    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
-  ],
-  [
-    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
-    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
-    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
-    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
-    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
-  ],
-  [
-    { key: '1', col1: 'คลองแม่พุง', col2: '384.29', col3: 'น้ำมาก', col4: '08:00 น.' },
-    { key: '2', col1: 'สะพานอิงอุดม', col2: '384.29', col3: 'น้ำมาก', col4: '10:00 น.' },
-    { key: '3', col1: 'เทิง', col2: '384.29', col3: 'น้ำมาก', col4: '12:00 น.' },
-    { key: '4', col1: 'เชียงราย', col2: '385.00', col3: 'น้ำปกติ', col4: '09:00 น.' },
-    { key: '5', col1: 'แม่สาย', col2: '386.00', col3: 'น้ำปกติ', col4: '11:00 น.' },
-  ]
-];
 
-const dropdownOptions = [
-  { label: 'อำเภอเมืองเชียงราย', value: 0 },
-  { label: 'อำเภอแม่จัน', value: 1 },
-  { label: 'อำเภอแม่สาย', value: 2 },
-  { label: 'อำเภอเชียงของ', value: 3 },
-  { label: 'อำเภอเทิง', value: 4 },
-  { label: 'อำเภอป่าแดด', value: 5 },
-];
-
-// Banner images
 const bannerImages = [
   require('@/assets/banners/banner1.jpg'),
   require('@/assets/banners/banner2.jpg'),
   require('@/assets/banners/banner3.jpg'),
 ];
 
-// Links for each banner (must match order/length of bannerImages)
 const bannerLinks = [
   'https://www.facebook.com/profile.php?id=6157604461323',
   'https://line.me/R/ti/p/@firstLineOA',
   ''
 ];
 
-
 export default function HomeScreen() {
   const [selectedDataIndex, setSelectedDataIndex] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalRows, setModalRows] = useState<
-    { key: string; col1: string; col2: string; col3: string; col4: string }[]
-  >([]);
+  const [modalRows, setModalRows] = useState<any[]>([]);
+  const [amphurData, setAmphurData] = useState<any[]>([]);
+  const [dropdownOptions, setDropdownOptions] = useState<{ label: string; value: number }[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const foundRows = allTableData[selectedDataIndex].filter(row => row.col3 === 'น้ำล้นตลิ่ง');
+    const getData = async () => {
+      try {
+        const data = await fetchData();
+        if (data && typeof data === 'object') {
+          const arr = Object.entries(data).map(([amphur, rows]) => ({
+            amphur,
+            rows: Array.isArray(rows) ? rows : [],
+          }));
+          setAmphurData(arr);
+          setDropdownOptions(
+            arr.map((group, idx) => ({
+              label: group.amphur,
+              value: idx,
+            }))
+          );
+        } else {
+          setAmphurData([]);
+          setDropdownOptions([]);
+        }
+      } catch (error) {
+        setAmphurData([]);
+        setDropdownOptions([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (!amphurData[selectedDataIndex] || !Array.isArray(amphurData[selectedDataIndex]?.rows)) return;
+    const foundRows = amphurData[selectedDataIndex].rows.filter(
+      (row: any) => row.water_status_calc === 'น้ำล้นตลิ่ง'
+    );
     if (foundRows.length > 0) {
       setModalRows(foundRows);
       setModalVisible(true);
@@ -98,7 +70,7 @@ export default function HomeScreen() {
       setModalRows([]);
       setModalVisible(false);
     }
-  }, [selectedDataIndex]);
+  }, [selectedDataIndex, amphurData]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -106,7 +78,7 @@ export default function HomeScreen() {
         headerImage={
           <View style={styles.headerRow}>
             <Image
-              source={require('@/assets/images/app-icon.png')} // Add your app-icon.png here
+              source={require('@/assets/images/app-icon.png')}
               style={styles.headerIcon}
             />
             <ThemedText style={styles.headerTitle}>
@@ -126,10 +98,10 @@ export default function HomeScreen() {
             <View style={styles.modalContent}>
               <ThemedText style={styles.modalTitle}>แจ้งเตือนน้ำล้นตลิ่ง</ThemedText>
               {modalRows.map((row, idx) => (
-                <View key={row.key} style={{ marginBottom: 12 }}>
-                  <ThemedText style={styles.modalStation}>สถานี: {row.col1}</ThemedText>
-                  <ThemedText>ระดับน้ำ: {row.col2}</ThemedText>
-                  <ThemedText>เวลา: {row.col4}</ThemedText>
+                <View key={row.station + row.time + idx} style={{ marginBottom: 12 }}>
+                  <ThemedText style={styles.modalStation}>สถานี: {row.station}</ThemedText>
+                  <ThemedText>ระดับน้ำ: {row.water_level}</ThemedText>
+                  <ThemedText>เวลา: {row.time}</ThemedText>
                 </View>
               ))}
               <TouchableOpacity
@@ -154,7 +126,7 @@ export default function HomeScreen() {
         <View style={styles.bannerContainer}>
           <Carousel
             width={360}
-            height={200} // Adjusted height for consistency
+            height={200}
             autoPlay
             autoPlayInterval={3000}
             data={bannerImages}
@@ -177,11 +149,15 @@ export default function HomeScreen() {
         </View>
 
         <ThemedText style={styles.infoText}>
-          ข้อมูลสถานีวัดระดับน้ำในพื้นที่ <ThemedText style={styles.infoHighlight}>{dropdownOptions[selectedDataIndex].label}</ThemedText>
+          ข้อมูลสถานีวัดระดับน้ำในพื้นที่{' '}
+          <ThemedText style={styles.infoHighlight}>
+            {dropdownOptions[selectedDataIndex]?.label || ''}
+          </ThemedText>
           {'\n'}ณ วันที่ {new Date().getDate()} {getThaiMonthName(new Date())} {new Date().getFullYear() + 543}
           {' '}เวลา {new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })} น.
         </ThemedText>
 
+        {/* Dropdown */}
         <View style={styles.chipScroll}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {dropdownOptions.map(option => (
@@ -224,27 +200,32 @@ export default function HomeScreen() {
           </View>
           {/* Data Rows */}
           <FlatList
-            data={allTableData[selectedDataIndex]}
-            keyExtractor={item => item.key}
+            data={amphurData[selectedDataIndex]?.rows || []}
+            keyExtractor={(item, idx) => item.station + item.time + idx}
             renderItem={({ item }) => (
               <View style={styles.tableRow}>
-                <ThemedText style={styles.tableCell}>{item.col1}</ThemedText>
-                <ThemedText style={styles.tableCell}>{item.col2}</ThemedText>
+                <ThemedText style={styles.tableCell}>{item.station}</ThemedText>
+                <ThemedText style={styles.tableCell}>{item.water_level}</ThemedText>
                 <ThemedText
                   style={[
                     styles.col3Cell,
-                    item.col3 === 'น้ำมาก' && { backgroundColor: '#2196f3', borderColor: '#2196f3', color: '#fff' },         // blue
-                    item.col3 === 'น้ำปกติ' && { backgroundColor: '#43a047', borderColor: '#43a047', color: '#fff' },         // green
-                    item.col3 === 'น้ำล้นตลิ่ง' && { backgroundColor: '#e53935', borderColor: '#e53935', color: '#fff' },    // red
-                    item.col3 === 'น้ำน้อย' && { backgroundColor: '#ffd600', borderColor: '#ffd600', color: '#000' },         // yellow
-                    item.col3 === 'น้ำน้อยวิกฤต' && { backgroundColor: '#ff9800', borderColor: '#ff9800', color: '#fff' },   // orange
+                    item.water_status_calc === 'น้ำมาก' && { backgroundColor: '#2196f3', borderColor: '#2196f3', color: '#fff' },
+                    item.water_status_calc === 'น้ำปกติ' && { backgroundColor: '#43a047', borderColor: '#43a047', color: '#fff' },
+                    item.water_status_calc === 'น้ำล้นตลิ่ง' && { backgroundColor: '#e53935', borderColor: '#e53935', color: '#fff' },
+                    item.water_status_calc === 'น้ำน้อย' && { backgroundColor: '#ffd600', borderColor: '#ffd600', color: '#000' },
+                    item.water_status_calc === 'น้ำน้อยวิกฤต' && { backgroundColor: '#ff9800', borderColor: '#ff9800', color: '#fff' },
                   ]}
                 >
-                  {item.col3}
+                  {item.water_status_calc}
                 </ThemedText>
-                <ThemedText style={styles.tableCell}>{item.col4}</ThemedText>
+                <ThemedText style={styles.tableCell}>{item.time}</ThemedText>
               </View>
             )}
+            ListEmptyComponent={
+              <ThemedText style={{ textAlign: 'center', margin: 16 }}>
+                {loading ? 'กำลังโหลดข้อมูล...' : 'ไม่พบข้อมูล'}
+              </ThemedText>
+            }
           />
         </View>
 
@@ -257,12 +238,10 @@ export default function HomeScreen() {
             ข้อมูลเพิ่มเติม: https://chiangrai.thaiwater.net/wl
           </ThemedText>
         </TouchableOpacity>
-
       </ParallaxScrollView>
     </View>
   );
 }
-
 
 function getThaiMonthName(date: Date) {
   const thaiMonths = [
