@@ -51,7 +51,7 @@ export default function FloodGuideTips() {
             style={styles.headerWaterIcon}
           />
           <View style={styles.headerTextBox}>
-            <ThemedText style={styles.headerTitle}>
+            <ThemedText variant='bold' style={styles.headerTitle}>
               คำแนะนำรับมือภัยน้ำท่วม
             </ThemedText>
             <ThemedText style={styles.headerSubtitle}>
@@ -70,7 +70,7 @@ export default function FloodGuideTips() {
           source={require('@/assets/images/e-book-first-page.jpg')}
           style={styles.ebookImage}
         />
-        <ThemedText style={styles.ebookText}>
+        <ThemedText variant="bold" style={styles.ebookText}>
           คลิกเพื่ออ่านคู่มือรับมือภัยน้ำท่วมฉบับเต็ม
         </ThemedText>
       </TouchableOpacity>
@@ -94,7 +94,7 @@ export default function FloodGuideTips() {
                 color={section.color}
                 style={{ marginRight: 8 }}
               />
-              <ThemedText
+              <ThemedText variant='bold'
                 style={[styles.sectionTitle, { color: section.color }]}
               >
                 {section.title}
@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: '#ffffffff',
     fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 2,
   },
   headerSubtitle: {
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 2,
     marginLeft: 2,
-    marginRight: 2,
+    marginRight: 10,
   },
   headerWaterIcon: {
     marginLeft: 12,
@@ -169,11 +168,6 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 16,
     marginBottom: 8,
-  },
-  titleText: {
-    color: '#1976d2',
-    fontWeight: 'bold',
-    fontSize: 20,
   },
   container: {
     marginLeft: 20,
@@ -199,7 +193,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   sectionTitle: {
-    fontWeight: 'bold',
     fontSize: 16,
   },
   tipRow: {
@@ -231,7 +224,6 @@ const styles = StyleSheet.create({
   ebookText: {
     fontSize: 16,
     color: '#1976d2',
-    fontWeight: 'bold',
     textAlign: 'center',
   },
 });

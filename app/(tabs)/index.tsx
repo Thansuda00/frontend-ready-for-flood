@@ -81,8 +81,8 @@ export default function HomeScreen() {
               source={require('@/assets/images/app-icon.png')}
               style={styles.headerIcon}
             />
-            <ThemedText style={styles.headerTitle}>
-              น้ำท่วมเราพร้อม!
+            <ThemedText variant="bold" style={styles.headerTitle}>
+              น้ำท่วมเราพร้อม !
             </ThemedText>
           </View>
         }
@@ -99,9 +99,9 @@ export default function HomeScreen() {
               <ThemedText style={styles.modalTitle}>แจ้งเตือนน้ำล้นตลิ่ง</ThemedText>
               {modalRows.map((row, idx) => (
                 <View key={row.station + row.time + idx} style={{ marginBottom: 12 }}>
-                  <ThemedText style={styles.modalStation}>สถานี: {row.station}</ThemedText>
-                  <ThemedText>ระดับน้ำ: {row.water_level}</ThemedText>
-                  <ThemedText>เวลา: {row.time}</ThemedText>
+                  <ThemedText variant='bold' style={styles.modalStation}>สถานี: {row.station}</ThemedText>
+                  <ThemedText variant='bold'>ระดับน้ำ: {row.water_level}</ThemedText>
+                  <ThemedText variant='bold'>เวลา: {row.time}</ThemedText>
                 </View>
               ))}
               <TouchableOpacity
@@ -114,7 +114,7 @@ export default function HomeScreen() {
                 }}
                 onPress={() => setModalVisible(false)}
               >
-                <ThemedText style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
+                <ThemedText variant='bold' style={{ color: '#fff', fontSize: 16 }}>
                   ปิด
                 </ThemedText>
               </TouchableOpacity>
@@ -186,7 +186,7 @@ export default function HomeScreen() {
           {/* Header Row */}
           <View style={[styles.tableRow, styles.tableHeader]}>
             {tableHeader.map((header, idx) => (
-              <ThemedText
+              <ThemedText variant='bold'
                 key={idx}
                 style={[
                   styles.tableCell,
@@ -235,7 +235,7 @@ export default function HomeScreen() {
           style={styles.referenceLink}
         >
           <ThemedText style={styles.referenceText}>
-            ข้อมูลเพิ่มเติม: https://chiangrai.thaiwater.net/wl
+            ข้อมูลเพิ่มเติม: ศูนย์ข้อมูลน้ำระดับจังหวัด
           </ThemedText>
         </TouchableOpacity>
       </ParallaxScrollView>
@@ -273,8 +273,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     color: '#ffffffff',
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 30,
     textAlign: 'justify',
   },
   modalOverlay: {
@@ -292,13 +291,11 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   modalTitle: {
-    fontWeight: 'bold',
     fontSize: 20,
     color: '#e53935',
     marginBottom: 8,
   },
   modalStation: {
-    fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 4,
     color: '#1976d2',
@@ -322,7 +319,6 @@ const styles = StyleSheet.create({
   dropdownLabel: {
     fontSize: 16,
     color: '#1976d2',
-    fontWeight: 'bold',
     marginRight: 12,
   },
   picker: {
@@ -350,7 +346,6 @@ const styles = StyleSheet.create({
   },
   infoHighlight: {
     color: '#1976d2',
-    fontWeight: 'bold',
   },
   tableContainer: {
     marginHorizontal: 16,
@@ -386,7 +381,6 @@ const styles = StyleSheet.create({
     minWidth: 0, // Allow shrinking
   },
   tableCellHeader: {
-    fontWeight: 'bold',
     fontSize: 14,
     color: '#fff',
     backgroundColor: '#1976d2',
@@ -409,7 +403,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 4,
     paddingHorizontal: 0,
-    fontWeight: 'bold',
     minWidth: 0,
   },
   chipScroll: {

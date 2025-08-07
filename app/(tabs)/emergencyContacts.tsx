@@ -20,7 +20,7 @@ export default function EmergencyContactsScreen() {
             style={styles.headerAlertIcon}
           />
           <View style={styles.headerTextBox}>
-            <ThemedText style={styles.headerTitle}>ติดต่อฉุกเฉิน</ThemedText>
+            <ThemedText variant='bold' style={styles.headerTitle}>ติดต่อฉุกเฉิน</ThemedText>
             <ThemedText style={styles.headerSubtitle}>
               เบอร์สายด่วนกรมป้องกันและบรรเทาสาธารณภัย 24 ชั่วโมง
             </ThemedText>
@@ -31,7 +31,7 @@ export default function EmergencyContactsScreen() {
       {/* Emergency Phone Section */}
       <View style={styles.card}>
         <Ionicons name="call" size={40} color="#e53935" style={styles.icon} />
-        <ThemedText style={styles.title}>
+        <ThemedText variant='bold' style={styles.title}>
           เบอร์โทรสายด่วน {phoneNumber}
         </ThemedText>
         <ThemedText style={styles.subtitle}>
@@ -41,7 +41,7 @@ export default function EmergencyContactsScreen() {
           style={[styles.button, styles.phoneButton]}
           onPress={() => Linking.openURL(`tel:${phoneNumber}`)}
         >
-          <ThemedText style={styles.buttonText}>โทร {phoneNumber}</ThemedText>
+          <ThemedText variant='bold'style={styles.buttonText}>โทร {phoneNumber}</ThemedText>
         </Pressable>
       </View>
 
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: '#ffffffff',
     fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 2,
   },
   headerSubtitle: {
@@ -121,9 +120,9 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: 12,
     padding: 28,
-    margin: 18,
+    marginLeft: 20,
     alignItems: 'center',
     elevation: 3,
     shadowColor: '#000',
@@ -136,7 +135,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#1976d2',
     marginBottom: 8,
     textAlign: 'center',
@@ -170,7 +168,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: 'bold',
     letterSpacing: 0.5,
   },
   socialRow: {

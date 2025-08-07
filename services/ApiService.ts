@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:3000/scrape'; // Use your actual IP
+const API_URL = 'https://backend-ready-for-flood.onrender.com/scrape'; // Use your actual IP
 
 export const fetchData = async () => {
   try {

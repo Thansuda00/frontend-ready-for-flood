@@ -33,6 +33,7 @@ export default function RootLayout() {
           fontSize: 12,
           fontWeight: '600',
           marginBottom: 4,
+          fontFamily: 'Kanit-Regular',
         },
         tabBarIconStyle: {
           marginTop: 6,

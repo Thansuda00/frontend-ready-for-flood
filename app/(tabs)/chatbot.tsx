@@ -183,7 +183,7 @@ export default function ChatBot() {
             style={styles.chatbubblesIcon}
           />
           <View style={styles.headerTextBox}>
-            <ThemedText style={styles.headerTitle}>
+            <ThemedText variant='bold' style={styles.headerTitle}>
               น้องต้นน้ำ
             </ThemedText>
             <ThemedText style={styles.headerSubtitle}>
@@ -253,7 +253,7 @@ export default function ChatBot() {
           <View key={groupIdx} style={{ marginBottom: 10 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
               <Ionicons name={group.icon as any} size={18} color="#1976d2" style={{ marginRight: 6 }} />
-              <ThemedText style={{ color: '#1976d2', fontWeight: 'bold', fontSize: 15 }}>
+              <ThemedText variant='bold'style={{ color: '#1976d2', fontSize: 15 }}>
                 {group.label}
               </ThemedText>
             </View>
@@ -294,16 +294,14 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: '#ffffffff',
     fontSize: 24,
-    fontWeight: 'bold',
   },
   headerSubtitle: {
     color: '#ffffffff',
     fontSize: 15,
     opacity: 0.85,
-    fontWeight: '500',
     marginTop: 2,
     marginLeft: 2,
-    marginRight: 2,
+    marginRight: 10,
   },
 
   headerImage: {
@@ -331,14 +329,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5fafd',
     borderRadius: 16,
     padding: 8,
-    marginHorizontal: 8,
     marginBottom: 12,
     shadowColor: '#2196f3',
     shadowOpacity: 0.08,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
-    margin: 16,
+    marginLeft: 20,
   },
   messageRow: {
     flexDirection: 'row',
@@ -423,7 +420,7 @@ const styles = StyleSheet.create({
   suggestedContainer: {
     paddingHorizontal: 8,
     paddingBottom: 16,
-    marginBottom: 45,
+    marginLeft: 10,
   },
   suggestedChip: {
     backgroundColor: '#ffffffff',
@@ -433,6 +430,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderWidth: 1,
     borderColor: '#494949ff',
+    marginBottom: 1,
   },
   suggestedText: {
     color: '#545353ff',

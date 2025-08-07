@@ -93,10 +93,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Center content vertically
     alignItems: 'center', // Center content horizontally
     position: 'relative',
-    borderBottomLeftRadius: 20, // Add bottom left radius
-    borderBottomRightRadius: 20, // Add bottom right radius
-    marginLeft: 20,
-    marginRight: 20,
+    borderBottomLeftRadius: 15, // Add bottom left radius
+    borderBottomRightRadius: 15, // Add bottom right radius
   },
   headerContent: {
     flex: 1,
