@@ -78,7 +78,7 @@ export default function HomeScreen() {
         headerImage={
           <View style={styles.headerRow}>
             <Image
-              source={require('@/assets/images/app-icon.png')}
+              source={require('@/assets/images/header-app-icon.png')}
               style={styles.headerIcon}
             />
             <ThemedText variant="bold" style={styles.headerTitle}>

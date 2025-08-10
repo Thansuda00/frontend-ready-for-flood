@@ -1,23 +1,24 @@
 {
   "expo": {
-    "name": "MyNewApp",
-    "slug": "MyNewApp",
+    "name": "ReadyForFlood",
+    "slug": "ReadyForFlood",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "mynewapp",
+    "icon": "./assets/images/app-profile.jpg",
+    "scheme": "readyforflood",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "package": "com.readyforflood.app",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/app-profile.jpg",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
-      "googleServicesFile": "./android/app/google-services.json"
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "bundler": "metro",
@@ -29,7 +30,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/app-profile.jpg",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -43,9 +44,11 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "fonts": {
-      "Kanit-Regular": "./assets/fonts/Kanit-Regular.ttf",
-      "Kanit-Bold": "./assets/fonts/Kanit-Bold.ttf"
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6fd9289b-c2fe-4420-afdf-1ed329fc50e3"
+      }
     }
   }
 }

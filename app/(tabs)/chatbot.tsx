@@ -239,7 +239,7 @@ export default function ChatBot() {
           style={styles.input}
           placeholderTextColor="#90caf9"
         />
-        <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
+        <TouchableOpacity onPress={() => sendMessage()} style={styles.sendButton}>
           <Ionicons name="send" size={22} color="#fff" />
         </TouchableOpacity>
       </KeyboardAvoidingView>
