@@ -1,4 +1,3 @@
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { fetchData } from '@/services/ApiService';
 import { Image } from 'expo-image';
@@ -73,9 +72,9 @@ export default function HomeScreen() {
   }, [selectedDataIndex, amphurData]);
 
   return (
-    <View style={{ flex: 1 }}>
-      <ParallaxScrollView
-        headerImage={
+    <FlatList
+      ListHeaderComponent={
+        <>
           <View style={styles.headerRow}>
             <Image
               source={require('@/assets/images/header-app-icon.png')}
@@ -85,151 +84,148 @@ export default function HomeScreen() {
               น้ำท่วมเราพร้อม !
             </ThemedText>
           </View>
-        }
-      >
-        {/* Popup Modal */}
-        <Modal
-          visible={modalVisible}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <ThemedText style={styles.modalTitle}>แจ้งเตือนน้ำล้นตลิ่ง</ThemedText>
-              {modalRows.map((row, idx) => (
-                <View key={row.station + row.time + idx} style={{ marginBottom: 12 }}>
-                  <ThemedText variant='bold' style={styles.modalStation}>สถานี: {row.station}</ThemedText>
-                  <ThemedText variant='bold'>ระดับน้ำ: {row.water_level}</ThemedText>
-                  <ThemedText variant='bold'>เวลา: {row.time}</ThemedText>
-                </View>
+
+          {/* Popup Modal */}
+          <Modal
+            visible={modalVisible}
+            transparent
+            animationType="fade"
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalContent}>
+                <ThemedText style={styles.modalTitle}>แจ้งเตือนน้ำล้นตลิ่ง</ThemedText>
+                {modalRows.map((row, idx) => (
+                  <View key={row.station + row.time + idx} style={{ marginBottom: 12 }}>
+                    <ThemedText variant='bold' style={styles.modalStation}>สถานี: {row.station}</ThemedText>
+                    <ThemedText variant='bold'>ระดับน้ำ: {row.water_level}</ThemedText>
+                    <ThemedText variant='bold'>เวลา: {row.time}</ThemedText>
+                  </View>
+                ))}
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#0c0c0cff',
+                    paddingVertical: 10,
+                    paddingHorizontal: 28,
+                    borderRadius: 14,
+                    marginTop: 10,
+                  }}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <ThemedText variant='bold' style={{ color: '#fff', fontSize: 16 }}>
+                    ปิด
+                  </ThemedText>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          {/* Slide Banner */}
+          <View style={styles.bannerContainer}>
+            <Carousel
+              width={360}
+              height={200}
+              autoPlay
+              autoPlayInterval={3000}
+              data={bannerImages}
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+                  activeOpacity={0.85}
+                  onPress={() => Linking.openURL(bannerLinks[index])}
+                  style={{ flex: 1 }}
+                >
+                  <Image
+                    source={item}
+                    style={styles.bannerImage}
+                    contentFit="cover"
+                    transition={300}
+                  />
+                </TouchableOpacity>
+              )}
+              loop
+            />
+          </View>
+
+          <ThemedText style={styles.infoText}>
+            ข้อมูลสถานีวัดระดับน้ำในพื้นที่{' '}
+            <ThemedText style={styles.infoHighlight}>
+              {dropdownOptions[selectedDataIndex]?.label || ''}
+            </ThemedText>
+            {'\n'}ณ วันที่ {new Date().getDate()} {getThaiMonthName(new Date())} {new Date().getFullYear() + 543}
+            {' '}เวลา {new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })} น.
+          </ThemedText>
+
+          {/* Dropdown */}
+          <View style={styles.chipScroll}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {dropdownOptions.map(option => (
+                <TouchableOpacity
+                  key={option.value}
+                  style={[
+                    styles.chip,
+                    selectedDataIndex === option.value && styles.chipActive,
+                  ]}
+                  onPress={() => setSelectedDataIndex(option.value)}
+                >
+                  <ThemedText
+                    style={[
+                      styles.chipText,
+                      selectedDataIndex === option.value && styles.chipTextActive,
+                    ]}
+                  >
+                    {option.label}
+                  </ThemedText>
+                </TouchableOpacity>
               ))}
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#0c0c0cff',
-                  paddingVertical: 10,
-                  paddingHorizontal: 28,
-                  borderRadius: 14,
-                  marginTop: 10,
-                }}
-                onPress={() => setModalVisible(false)}
-              >
-                <ThemedText variant='bold' style={{ color: '#fff', fontSize: 16 }}>
-                  ปิด
+            </ScrollView>
+          </View>
+
+          <View style={styles.tableContainer}>
+            {/* Header Row */}
+            <View style={[styles.tableRow, styles.tableHeader]}>
+              {tableHeader.map((header, idx) => (
+                <ThemedText variant='bold'
+                  key={idx}
+                  style={[
+                    styles.tableCell,
+                    styles.tableCellHeader,
+                    idx === tableHeader.length - 1 && styles.tableCellLast,
+                  ]}
+                >
+                  {header}
                 </ThemedText>
-              </TouchableOpacity>
+              ))}
             </View>
           </View>
-        </Modal>
-
-        {/* Slide Banner */}
-        <View style={styles.bannerContainer}>
-          <Carousel
-            width={360}
-            height={200}
-            autoPlay
-            autoPlayInterval={3000}
-            data={bannerImages}
-            renderItem={({ item, index }) => (
-              <TouchableOpacity
-                activeOpacity={0.85}
-                onPress={() => Linking.openURL(bannerLinks[index])}
-                style={{ flex: 1 }}
-              >
-                <Image
-                  source={item}
-                  style={styles.bannerImage}
-                  contentFit="cover"
-                  transition={300}
-                />
-              </TouchableOpacity>
-            )}
-            loop
-          />
-        </View>
-
-        <ThemedText style={styles.infoText}>
-          ข้อมูลสถานีวัดระดับน้ำในพื้นที่{' '}
-          <ThemedText style={styles.infoHighlight}>
-            {dropdownOptions[selectedDataIndex]?.label || ''}
+        </>
+      }
+      data={amphurData[selectedDataIndex]?.rows || []}
+      keyExtractor={(item, idx) => item.station + item.time + idx}
+      renderItem={({ item }) => (
+        <View style={styles.tableRow}>
+          <ThemedText style={styles.tableCell}>{item.station}</ThemedText>
+          <ThemedText style={styles.tableCell}>{item.water_level}</ThemedText>
+          <ThemedText
+            style={[
+              styles.col3Cell,
+              item.water_status_calc === 'น้ำมาก' && { backgroundColor: '#2196f3', borderColor: '#2196f3', color: '#fff' },
+              item.water_status_calc === 'น้ำปกติ' && { backgroundColor: '#43a047', borderColor: '#43a047', color: '#fff' },
+              item.water_status_calc === 'น้ำล้นตลิ่ง' && { backgroundColor: '#e53935', borderColor: '#e53935', color: '#fff' },
+              item.water_status_calc === 'น้ำน้อย' && { backgroundColor: '#ffd600', borderColor: '#ffd600', color: '#000' },
+              item.water_status_calc === 'น้ำน้อยวิกฤต' && { backgroundColor: '#ff9800', borderColor: '#ff9800', color: '#fff' },
+            ]}
+          >
+            {item.water_status_calc}
           </ThemedText>
-          {'\n'}ณ วันที่ {new Date().getDate()} {getThaiMonthName(new Date())} {new Date().getFullYear() + 543}
-          {' '}เวลา {new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })} น.
+          <ThemedText style={styles.tableCell}>{item.time}</ThemedText>
+        </View>
+      )}
+      ListEmptyComponent={
+        <ThemedText style={{ textAlign: 'center', margin: 16 }}>
+          {loading ? 'กำลังโหลดข้อมูล...' : 'ไม่พบข้อมูล'}
         </ThemedText>
-
-        {/* Dropdown */}
-        <View style={styles.chipScroll}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {dropdownOptions.map(option => (
-              <TouchableOpacity
-                key={option.value}
-                style={[
-                  styles.chip,
-                  selectedDataIndex === option.value && styles.chipActive,
-                ]}
-                onPress={() => setSelectedDataIndex(option.value)}
-              >
-                <ThemedText
-                  style={[
-                    styles.chipText,
-                    selectedDataIndex === option.value && styles.chipTextActive,
-                  ]}
-                >
-                  {option.label}
-                </ThemedText>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-
-        <View style={styles.tableContainer}>
-          {/* Header Row */}
-          <View style={[styles.tableRow, styles.tableHeader]}>
-            {tableHeader.map((header, idx) => (
-              <ThemedText variant='bold'
-                key={idx}
-                style={[
-                  styles.tableCell,
-                  styles.tableCellHeader,
-                  idx === tableHeader.length - 1 && styles.tableCellLast,
-                ]}
-              >
-                {header}
-              </ThemedText>
-            ))}
-          </View>
-          {/* Data Rows */}
-          <FlatList
-            data={amphurData[selectedDataIndex]?.rows || []}
-            keyExtractor={(item, idx) => item.station + item.time + idx}
-            renderItem={({ item }) => (
-              <View style={styles.tableRow}>
-                <ThemedText style={styles.tableCell}>{item.station}</ThemedText>
-                <ThemedText style={styles.tableCell}>{item.water_level}</ThemedText>
-                <ThemedText
-                  style={[
-                    styles.col3Cell,
-                    item.water_status_calc === 'น้ำมาก' && { backgroundColor: '#2196f3', borderColor: '#2196f3', color: '#fff' },
-                    item.water_status_calc === 'น้ำปกติ' && { backgroundColor: '#43a047', borderColor: '#43a047', color: '#fff' },
-                    item.water_status_calc === 'น้ำล้นตลิ่ง' && { backgroundColor: '#e53935', borderColor: '#e53935', color: '#fff' },
-                    item.water_status_calc === 'น้ำน้อย' && { backgroundColor: '#ffd600', borderColor: '#ffd600', color: '#000' },
-                    item.water_status_calc === 'น้ำน้อยวิกฤต' && { backgroundColor: '#ff9800', borderColor: '#ff9800', color: '#fff' },
-                  ]}
-                >
-                  {item.water_status_calc}
-                </ThemedText>
-                <ThemedText style={styles.tableCell}>{item.time}</ThemedText>
-              </View>
-            )}
-            ListEmptyComponent={
-              <ThemedText style={{ textAlign: 'center', margin: 16 }}>
-                {loading ? 'กำลังโหลดข้อมูล...' : 'ไม่พบข้อมูล'}
-              </ThemedText>
-            }
-          />
-        </View>
-
-        {/* Reference Link */}
+      }
+      ListFooterComponent={
         <TouchableOpacity
           onPress={() => Linking.openURL('https://chiangrai.thaiwater.net/wl')}
           style={styles.referenceLink}
@@ -238,8 +234,10 @@ export default function HomeScreen() {
             ข้อมูลเพิ่มเติม: ศูนย์ข้อมูลน้ำระดับจังหวัด
           </ThemedText>
         </TouchableOpacity>
-      </ParallaxScrollView>
-    </View>
+      }
+      contentContainerStyle={{ paddingBottom: 60 }}
+      showsVerticalScrollIndicator={false}
+    />
   );
 }
 
@@ -255,26 +253,29 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start', // <-- Aligns content to the left
+    justifyContent: 'center',
     paddingTop: 30,
     paddingBottom: 10,
+    marginTop: 10,
+    backgroundColor: '#326a95',
     gap: 12,
+    borderRadius: 12,
   },
   headerIcon: {
     width: 80,
     height: 80,
     marginBottom: 10,
-    borderRadius: 100, // Makes the image circular
-    shadowColor: '#000', // Shadow color
-    shadowOffset: { width: 0, height: 4 }, // Offset for the shadow
-    shadowOpacity: 0.6, // Shadow transparency
-    shadowRadius: 30, // Blur radius for the shadow
-    elevation: 8, // Android shadow
+    borderRadius: 100,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.6,
+    shadowRadius: 30,
+    elevation: 8,
   },
   headerTitle: {
     color: '#ffffffff',
     fontSize: 30,
-    textAlign: 'justify',
+    textAlign: 'center',
   },
   modalOverlay: {
     flex: 1,
@@ -362,7 +363,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
     paddingVertical: 12,
-    paddingHorizontal: 0, // Remove horizontal padding for full width
+    paddingHorizontal: 0,
   },
   tableHeader: {
     backgroundColor: '#1976d2',
@@ -377,8 +378,8 @@ const styles = StyleSheet.create({
     borderStartWidth: 1,
     borderStartColor: '#e3f2fd',
     paddingVertical: 4,
-    paddingHorizontal: 0, // Remove horizontal padding for full width
-    minWidth: 0, // Allow shrinking
+    paddingHorizontal: 0,
+    minWidth: 0,
   },
   tableCellHeader: {
     fontSize: 14,
@@ -430,15 +431,14 @@ const styles = StyleSheet.create({
   },
 
   bannerContainer: {
-    marginTop: 5,
-    marginLeft: 10,
+    marginTop: 20,
     marginRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: 200, // Adjusted height for consistency
+    height: 200,
     overflow: 'hidden',
-    borderRadius: 12,
+    borderRadius: 16,
   },
   bannerScroll: {
     width: '100%',

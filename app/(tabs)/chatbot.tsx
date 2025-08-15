@@ -1,8 +1,17 @@
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  FlatList,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 const QUESTION_GROUPS = [
   {
@@ -163,14 +172,45 @@ export default function ChatBot() {
     }, 800);
   };
 
-  // Auto-scroll to bottom when new message arrives
-  useEffect(() => {
-    flatListRef.current?.scrollToEnd({ animated: true });
-  }, [messages]);
+  // // Auto-scroll to bottom when new message arrives
+  // useEffect(() => {
+  //   flatListRef.current?.scrollToEnd({ animated: true });
+  // }, [messages]);
 
   return (
-    <ParallaxScrollView
-      headerImage={
+    <FlatList
+      ref={flatListRef}
+      data={messages}
+      keyExtractor={item => item.id}
+      renderItem={({ item }) => (
+        <View
+          style={[
+            styles.messageRow,
+            item.from === 'user' ? styles.userRow : styles.botRow
+          ]}
+        >
+          {item.from === 'bot' && (
+            <Image
+              source={require('@/assets/images/icon.png')}
+              style={styles.profileImage}
+            />
+          )}
+          <View
+            style={[
+              styles.bubble,
+              item.from === 'user' ? styles.userBubble : styles.botBubble
+            ]}
+          >
+            <ThemedText style={[
+              styles.bubbleText,
+              item.from === 'user' ? styles.userText : styles.botText
+            ]}>
+              {item.text}
+            </ThemedText>
+          </View>
+        </View>
+      )}
+      ListHeaderComponent={
         <View style={styles.headerRow}>
           <Ionicons
             name="chatbubbles"
@@ -188,87 +228,57 @@ export default function ChatBot() {
           </View>
         </View>
       }
-    >
-
-      <View style={styles.chatContainer}>
-        <FlatList
-          ref={flatListRef}
-          data={messages}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <View
-              style={[
-                styles.messageRow,
-                item.from === 'user' ? styles.userRow : styles.botRow
-              ]}
-            >
-              {item.from === 'bot' && (
-                <Image
-                  source={require('@/assets/images/icon.png')} // Replace with your bot profile image
-                  style={styles.profileImage}
-                />
-              )}
-              <View
-                style={[
-                  styles.bubble,
-                  item.from === 'user' ? styles.userBubble : styles.botBubble
-                ]}
-              >
-                <ThemedText style={[
-                  styles.bubbleText,
-                  item.from === 'user' ? styles.userText : styles.botText
-                ]}>
-                  {item.text}
-                </ThemedText>
+      ListFooterComponent={
+        <>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            keyboardVerticalOffset={80}
+            style={styles.inputRow}
+          >
+            <TextInput
+              value={input}
+              onChangeText={setInput}
+              placeholder="พิมพ์ข้อความ..."
+              style={styles.input}
+              placeholderTextColor="#90caf9"
+            />
+            <TouchableOpacity onPress={() => sendMessage()} style={styles.sendButton}>
+              <Ionicons name="send" size={22} color="#fff" />
+            </TouchableOpacity>
+          </KeyboardAvoidingView>
+          <View style={styles.suggestedContainer}>
+            {QUESTION_GROUPS.map((group, groupIdx) => (
+              <View key={groupIdx} style={{ marginBottom: 10 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                  {group.icon && (
+                    <Ionicons name={group.icon as any} size={18} color="#1976d2" style={{ marginRight: 6 }} />
+                  )}
+                  {group.label && (
+                    <ThemedText variant='bold' style={{ color: '#1976d2', fontSize: 15 }}>
+                      {group.label}
+                    </ThemedText>
+                  )}
+                </View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  {group.questions.map((q, idx) => (
+                    <TouchableOpacity
+                      key={q}
+                      style={styles.suggestedChip}
+                      onPress={() => sendMessage(q)}
+                      activeOpacity={0.85}
+                    >
+                      <ThemedText style={styles.suggestedText}>{q}</ThemedText>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
               </View>
-            </View>
-          )}
-          contentContainerStyle={{ paddingVertical: 12, paddingHorizontal: 4 }}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={80}
-        style={styles.inputRow}
-      >
-        <TextInput
-          value={input}
-          onChangeText={setInput}
-          placeholder="พิมพ์ข้อความ..."
-          style={styles.input}
-          placeholderTextColor="#90caf9"
-        />
-        <TouchableOpacity onPress={() => sendMessage()} style={styles.sendButton}>
-          <Ionicons name="send" size={22} color="#fff" />
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-
-      <View style={styles.suggestedContainer}>
-        {QUESTION_GROUPS.map((group, groupIdx) => (
-          <View key={groupIdx} style={{ marginBottom: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-              <Ionicons name={group.icon as any} size={18} color="#1976d2" style={{ marginRight: 6 }} />
-              <ThemedText variant='bold'style={{ color: '#1976d2', fontSize: 15 }}>
-                {group.label}
-              </ThemedText>
-            </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {group.questions.map((q, idx) => (
-                <TouchableOpacity
-                  key={q}
-                  style={styles.suggestedChip}
-                  onPress={() => sendMessage(q)}
-                  activeOpacity={0.85}
-                >
-                  <ThemedText style={styles.suggestedText}>{q}</ThemedText>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+            ))}
           </View>
-        ))}
-      </View>
-    </ParallaxScrollView>
+        </>
+      }
+      contentContainerStyle={{ paddingVertical: 12, paddingHorizontal: 4 }}
+      showsVerticalScrollIndicator={false}
+    />
   );
 }
 
@@ -277,10 +287,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 36,
-    paddingBottom: 18,
-    gap: 18,
-    backgroundColor: 'rgba(255,255,255,0.0)',
+    paddingTop: 30,
+    paddingBottom: 10,
+    marginTop: 10,
+    backgroundColor: '#326a95',
+    gap: 12,
+    borderRadius: 12,
   },
   headerTextBox: {
     flex: 1,
@@ -299,39 +311,8 @@ const styles = StyleSheet.create({
     marginLeft: 2,
     marginRight: 10,
   },
-
-  headerImage: {
-    color: '#2196f3',
-    bottom: -60,
-    left: -20,
-    position: 'absolute',
-    opacity: 0.15,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginTop: 16,
-    marginBottom: 8,
-    justifyContent: 'center',
-  },
-  titleText: {
-    color: '#ffffffff',
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
   chatContainer: {
-    height: 320,
-    backgroundColor: '#f5fafd',
-    borderRadius: 16,
-    padding: 8,
-    marginBottom: 12,
-    shadowColor: '#2196f3',
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
     elevation: 2,
-    marginLeft: 20,
   },
   messageRow: {
     flexDirection: 'row',
@@ -417,6 +398,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingBottom: 16,
     marginLeft: 10,
+    marginBottom: 50,
   },
   suggestedChip: {
     backgroundColor: '#ffffffff',

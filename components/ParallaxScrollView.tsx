@@ -1,12 +1,13 @@
-import type { PropsWithChildren, ReactElement } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
+import {
+  Platform,
+  StyleSheet,
+  View,
+  FlatList,
+} from 'react-native';
 import Animated, {
-  interpolate,
-  useAnimatedRef,
   useAnimatedStyle,
-  useScrollViewOffset,
 } from 'react-native-reanimated';
-import Svg, { Path } from 'react-native-svg';
 
 import { ThemedView } from '@/components/ThemedView';
 import { useBottomTabOverflow } from '@/components/ui/TabBarBackground';
@@ -16,68 +17,68 @@ const HEADER_HEIGHT = 120;
 
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
+  scrollable?: boolean; // control scroll behavior
 }>;
 
 export default function ParallaxScrollView({
   children,
   headerImage,
+  scrollable = true, // default scrollable true
 }: Props) {
   const colorScheme = useColorScheme() ?? 'light';
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollOffset = useScrollViewOffset(scrollRef);
   const bottom = useBottomTabOverflow();
 
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
         {
-          translateY: interpolate(
-            scrollOffset.value,
-            [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
-            [-HEADER_HEIGHT / 2, 0, HEADER_HEIGHT * 0.75]
-          ),
+          translateY: 0,
         },
         {
-          scale: interpolate(scrollOffset.value, [-HEADER_HEIGHT, 0, HEADER_HEIGHT], [1.12, 1, 0.98]),
+          scale: 1,
         },
       ],
-      shadowOpacity: interpolate(scrollOffset.value, [-HEADER_HEIGHT, 0, HEADER_HEIGHT], [0.18, 0.12, 0.04]),
-      elevation: interpolate(scrollOffset.value, [-HEADER_HEIGHT, 0, HEADER_HEIGHT], [8, 4, 1]),
+      shadowOpacity: 0.12,
+      elevation: 4,
     };
   });
 
+  const ContentWrapper = scrollable
+    ? Animated.ScrollView
+    : View; // fallback to non-scroll
+
   return (
     <ThemedView style={styles.container}>
-      <Animated.ScrollView
-        ref={scrollRef}
+      <Animated.View
+        style={[
+          styles.header,
+          {
+            backgroundColor: colorScheme === 'light' ? '#326a95' : '#1D3D47',
+            ...Platform.select({
+              ios: {
+                shadowOffset: { width: 0, height: 4 },
+                shadowRadius: 16,
+              },
+              android: {
+                elevation: 8,
+                borderRadius: 16,
+              },
+            }),
+          },
+          headerAnimatedStyle,
+        ]}
+      >
+        <View style={styles.headerContent}>{headerImage}</View>
+      </Animated.View>
+
+      <ContentWrapper
+        style={styles.scrollContent}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
-        scrollIndicatorInsets={{ bottom }}
-        contentContainerStyle={{ paddingBottom: bottom }}>
-        <Animated.View
-          style={[
-            styles.header,
-            {
-              backgroundColor: colorScheme === 'light' ? '#326a95' : '#1D3D47',
-              ...Platform.select({
-                ios: {
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowRadius: 16,
-                },
-                android: {
-                  elevation: 8,
-                  borderRadius: 16,
-                },
-              }),
-            },
-            headerAnimatedStyle,
-          ]}
-        >
-          <View style={styles.headerContent}>
-            {headerImage}
-          </View>
-        </Animated.View>
-        <ThemedView style={styles.content}>{children}</ThemedView>
-      </Animated.ScrollView>
+      >
+        {children}
+      </ContentWrapper>
     </ThemedView>
   );
 }
@@ -88,29 +89,29 @@ const styles = StyleSheet.create({
   },
   header: {
     height: HEADER_HEIGHT,
-    overflow: 'hidden', // Ensure the radius is applied correctly
+    overflow: 'hidden',
     marginTop: Platform.OS === 'ios' ? 8 : 0,
-    justifyContent: 'center', // Center content vertically
-    alignItems: 'center', // Center content horizontally
+    justifyContent: 'center',
+    alignItems: 'center',
     position: 'relative',
-    borderBottomLeftRadius: 15, // Add bottom left radius
-    borderBottomRightRadius: 15, // Add bottom right radius
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
   },
   headerContent: {
     flex: 1,
     width: '100%',
-    alignItems: 'center', // Center content horizontally
-    justifyContent: 'center', // Center content vertically
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: 18,
-    paddingBottom: 18, // Add padding to center content better
-    marginHorizontal: 'auto', // Center horizontally if applicable
+    paddingBottom: 18,
     zIndex: 2,
   },
-  content: {
+  scrollContent: {
     flex: 1,
+  },
+  contentContainer: {
     padding: 24,
     gap: 16,
-    overflow: 'visible',
-    marginRight: 20,
+    paddingBottom: 80,
   },
 });

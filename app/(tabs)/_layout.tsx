@@ -4,15 +4,22 @@ import { Tabs } from 'expo-router';
 import React, { useRef } from 'react';
 import { Animated, Image, Linking, Pressable } from 'react-native';
 
-function AnimatedTabBarButton({ children, onPress, accessibilityState }) {
+import type { PressableProps, GestureResponderEvent } from 'react-native';
+
+type AnimatedTabBarButtonProps = {
+  children: React.ReactNode;
+  onPress?: (event: GestureResponderEvent) => void;
+};
+
+function AnimatedTabBarButton({ children, onPress }: AnimatedTabBarButtonProps) {
   const scale = useRef(new Animated.Value(1)).current;
 
-  const handlePress = () => {
+  const handlePress = (event: GestureResponderEvent) => {
     Animated.sequence([
       Animated.timing(scale, { toValue: 0.85, duration: 100, useNativeDriver: true }),
       Animated.timing(scale, { toValue: 1, duration: 100, useNativeDriver: true }),
     ]).start();
-    if (onPress) onPress();
+    if (onPress) onPress(event);
   };
 
   return (
