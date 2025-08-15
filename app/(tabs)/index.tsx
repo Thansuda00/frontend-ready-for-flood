@@ -15,7 +15,7 @@ const bannerImages = [
 
 const bannerLinks = [
   'https://www.facebook.com/profile.php?id=61576044613232',
-  'https://line.me/R/ti/p/@firstLineOA',
+  'https://line.me/R/ti/p/@769btwlv',
   ''
 ];
 
@@ -256,7 +256,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 30,
     paddingBottom: 10,
-    marginTop: 10,
     backgroundColor: '#326a95',
     gap: 12,
     borderRadius: 12,

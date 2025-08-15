@@ -126,7 +126,7 @@ const MOCK_ANSWERS: Record<string, string> = {
           ควรตัดไฟที่มิเตอร์ไฟฟ้าหรือสวิตช์ไฟหลักของบ้านครับ
         `,
   "สามารถนำการแจ้งเตือนจากแอปนี้ไปเผยแพร่ข่าวสารต่อได้หรือไม่": "สามารถนำไปเผยแพร่ต่อได้ครับ เพื่อให้ทุกคนได้รับข่าวสารทั่วถึงครับ",
-  "ระดับน้ำแถวบ้านสูงมาก แต่ยังไม่มีการแจ้งเตือนในแอปพลิเคชันต้องทำอย่างไร": "แจ้งข้อมูลมาในไลน์ น้ำท่วมเราพร้อม หรือเพจเฟสบุ๊ค น้ำท่วมเราพร้อม ได้เลยครับ และควรติดตามข่าวสารอยู่เรื่อยๆ ครับ",
+  "ระดับน้ำแถวบ้านสูงมาก แต่ยังไม่มีการแจ้งเตือนในแอปพลิเคชันต้องทำอย่างไร": "แจ้งข้อมูลมาในไลน์ น้ำท่วมเราพร้อม หรือเพจเฟสบุค น้ำท่วมเราพร้อม ได้เลยครับ และควรติดตามข่าวสารอยู่เรื่อยๆ ครับ",
   "แอปพลิเคชันมีให้แจ้งบอกข้อมูลเองไหม?": "สามารถแจ้งเข้ามาในไลน์ น้ำท่วมเราพร้อม หรือ เพจเฟสบุค น้ำท่วมเราพร้อม ได้เลยครับ",
   "แอปพลิเคชันมีค่าบริการไหม?": "ไม่มีคิดค่าบริการใดๆครับ",
   "แจ้งเตือนเข้าทาง LINE หรือ SMS ได้ไหม?": "ในตอนนี้ไม่สามารถแจ้งเตือนเข้า SMS ได้ครับ แต่ในตัวของแอปพลิเคชันจะมีไลน์ OA น้ำท่วมเราพร้อมแจ้งเตือนอยู่ครับ https://line.me/R/ti/p/@769btwlv",
@@ -172,113 +172,118 @@ export default function ChatBot() {
     }, 800);
   };
 
-  // // Auto-scroll to bottom when new message arrives
-  // useEffect(() => {
-  //   flatListRef.current?.scrollToEnd({ animated: true });
-  // }, [messages]);
+  // Auto-scroll to bottom when new message arrives
+  useEffect(() => {
+    if (messages.length > 0) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100); // small delay for layout
+    }
+  }, [messages]);
 
   return (
-    <FlatList
-      ref={flatListRef}
-      data={messages}
-      keyExtractor={item => item.id}
-      renderItem={({ item }) => (
-        <View
-          style={[
-            styles.messageRow,
-            item.from === 'user' ? styles.userRow : styles.botRow
-          ]}
-        >
-          {item.from === 'bot' && (
-            <Image
-              source={require('@/assets/images/icon.png')}
-              style={styles.profileImage}
+      <FlatList 
+        ListHeaderComponent={
+          <View style={styles.headerRow}>
+            <Ionicons
+              name="chatbubbles"
+              size={44}
+              color="#ffffffff"
+              style={styles.chatbubblesIcon}
             />
-          )}
+            <View style={styles.headerTextBox}>
+              <ThemedText variant='bold' style={styles.headerTitle}>
+                น้องต้นน้ำ
+              </ThemedText>
+              <ThemedText style={styles.headerSubtitle}>
+                เพื่อช่วยเหลือและให้ข้อมูลเกี่ยวกับภัยพิบัติและการเตรียมความพร้อม
+              </ThemedText>
+            </View>
+          </View>
+        }
+        ref={flatListRef}
+        data={messages}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
           <View
             style={[
-              styles.bubble,
-              item.from === 'user' ? styles.userBubble : styles.botBubble
+              styles.messageRow,
+              item.from === 'user' ? styles.userRow : styles.botRow
             ]}
           >
-            <ThemedText style={[
-              styles.bubbleText,
-              item.from === 'user' ? styles.userText : styles.botText
-            ]}>
-              {item.text}
-            </ThemedText>
+            {item.from === 'bot' && (
+              <Image
+                source={require('@/assets/images/icon.png')}
+                style={styles.profileImage}
+              />
+            )}
+            <View
+              style={[
+                styles.bubble,
+                item.from === 'user' ? styles.userBubble : styles.botBubble
+              ]}
+            >
+              <ThemedText style={[
+                styles.bubbleText,
+                item.from === 'user' ? styles.userText : styles.botText
+              ]}>
+                {item.text}
+              </ThemedText>
+            </View>
           </View>
-        </View>
-      )}
-      ListHeaderComponent={
-        <View style={styles.headerRow}>
-          <Ionicons
-            name="chatbubbles"
-            size={44}
-            color="#ffffffff"
-            style={styles.chatbubblesIcon}
-          />
-          <View style={styles.headerTextBox}>
-            <ThemedText variant='bold' style={styles.headerTitle}>
-              น้องต้นน้ำ
-            </ThemedText>
-            <ThemedText style={styles.headerSubtitle}>
-              เพื่อช่วยเหลือและให้ข้อมูลเกี่ยวกับภัยพิบัติและการเตรียมความพร้อม
-            </ThemedText>
-          </View>
-        </View>
-      }
-      ListFooterComponent={
-        <>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            keyboardVerticalOffset={80}
-            style={styles.inputRow}
-          >
-            <TextInput
-              value={input}
-              onChangeText={setInput}
-              placeholder="พิมพ์ข้อความ..."
-              style={styles.input}
-              placeholderTextColor="#90caf9"
-            />
-            <TouchableOpacity onPress={() => sendMessage()} style={styles.sendButton}>
-              <Ionicons name="send" size={22} color="#fff" />
-            </TouchableOpacity>
-          </KeyboardAvoidingView>
-          <View style={styles.suggestedContainer}>
-            {QUESTION_GROUPS.map((group, groupIdx) => (
-              <View key={groupIdx} style={{ marginBottom: 10 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-                  {group.icon && (
-                    <Ionicons name={group.icon as any} size={18} color="#1976d2" style={{ marginRight: 6 }} />
-                  )}
-                  {group.label && (
-                    <ThemedText variant='bold' style={{ color: '#1976d2', fontSize: 15 }}>
-                      {group.label}
-                    </ThemedText>
-                  )}
+        )}
+
+        ListFooterComponent={
+          <>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+              keyboardVerticalOffset={80}
+              style={styles.inputRow}
+            >
+              <TextInput
+                value={input}
+                onChangeText={setInput}
+                placeholder="พิมพ์ข้อความ..."
+                style={styles.input}
+                placeholderTextColor="#90caf9"
+              />
+              <TouchableOpacity onPress={() => sendMessage()} style={styles.sendButton}>
+                <Ionicons name="send" size={22} color="#fff" />
+              </TouchableOpacity>
+            </KeyboardAvoidingView>
+            <View style={styles.suggestedContainer}>
+              {QUESTION_GROUPS.map((group, groupIdx) => (
+                <View key={groupIdx} style={{ marginBottom: 10 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                    {group.icon && (
+                      <Ionicons name={group.icon as any} size={18} color="#1976d2" style={{ marginRight: 6 }} />
+                    )}
+                    {group.label && (
+                      <ThemedText variant='bold' style={{ color: '#1976d2', fontSize: 15 }}>
+                        {group.label}
+                      </ThemedText>
+                    )}
+                  </View>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {group.questions.map((q, idx) => (
+                      <TouchableOpacity
+                        key={q}
+                        style={styles.suggestedChip}
+                        onPress={() => sendMessage(q)}
+                        activeOpacity={0.85}
+                      >
+                        <ThemedText style={styles.suggestedText}>{q}</ThemedText>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
                 </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {group.questions.map((q, idx) => (
-                    <TouchableOpacity
-                      key={q}
-                      style={styles.suggestedChip}
-                      onPress={() => sendMessage(q)}
-                      activeOpacity={0.85}
-                    >
-                      <ThemedText style={styles.suggestedText}>{q}</ThemedText>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </View>
-            ))}
-          </View>
-        </>
-      }
-      contentContainerStyle={{ paddingVertical: 12, paddingHorizontal: 4 }}
-      showsVerticalScrollIndicator={false}
-    />
+              ))}
+            </View>
+          </>
+        }
+        contentContainerStyle={{ paddingVertical: 12, paddingHorizontal: 4 }}
+        showsVerticalScrollIndicator={false}
+      />
   );
 }
 
@@ -288,11 +293,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 30,
-    paddingBottom: 10,
-    marginTop: 10,
+    paddingBottom: 18,
     backgroundColor: '#326a95',
-    gap: 12,
-    borderRadius: 12,
+    gap: 18,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
   },
   headerTextBox: {
     flex: 1,
@@ -311,13 +316,12 @@ const styles = StyleSheet.create({
     marginLeft: 2,
     marginRight: 10,
   },
-  chatContainer: {
-    elevation: 2,
-  },
+
   messageRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginVertical: 6,
+    marginVertical: 10,
+    marginHorizontal: 15,
   },
   userRow: {
     justifyContent: 'flex-end',
@@ -360,7 +364,7 @@ const styles = StyleSheet.create({
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 8,
+    marginHorizontal: 15,
     marginBottom: 18,
     backgroundColor: '#e3f2fd',
     borderRadius: 24,
@@ -370,6 +374,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 1 },
     elevation: 1,
+    marginVertical: 10,
   },
   input: {
     flex: 1,
@@ -388,16 +393,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  subtitle: {
-    color: '#1976d2',
-    fontSize: 13,
-    marginTop: 2,
-    lineHeight: 18,
-  },
   suggestedContainer: {
     paddingHorizontal: 8,
     paddingBottom: 16,
     marginLeft: 10,
+    marginRight: 10,
     marginBottom: 50,
   },
   suggestedChip: {
