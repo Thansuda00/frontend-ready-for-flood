@@ -2,12 +2,9 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React, { useRef } from 'react';
-import { Animated, Dimensions, Image, Linking, Platform, Pressable } from 'react-native';
+import { Animated, Image, Linking, Pressable } from 'react-native';
 
-import type { GestureResponderEvent } from 'react-native';
-
-const TAB_BAR_HEIGHT = Platform.OS === 'ios' ? 70 : 64;
-const SCREEN_WIDTH = Dimensions.get('window').width;
+import type { PressableProps, GestureResponderEvent } from 'react-native';
 
 type AnimatedTabBarButtonProps = {
   children: React.ReactNode;
@@ -19,15 +16,15 @@ function AnimatedTabBarButton({ children, onPress }: AnimatedTabBarButtonProps) 
 
   const handlePress = (event: GestureResponderEvent) => {
     Animated.sequence([
-      Animated.timing(scale, { toValue: 0.92, duration: 80, useNativeDriver: true }),
-      Animated.timing(scale, { toValue: 1, duration: 80, useNativeDriver: true }),
+      Animated.timing(scale, { toValue: 0.85, duration: 100, useNativeDriver: true }),
+      Animated.timing(scale, { toValue: 1, duration: 100, useNativeDriver: true }),
     ]).start();
     if (onPress) onPress(event);
   };
 
   return (
-    <Pressable onPress={handlePress} style={{ flex: 1 }}>
-      <Animated.View style={{ transform: [{ scale }], alignItems: 'center', justifyContent: 'center' }}>
+    <Pressable onPress={handlePress}>
+      <Animated.View style={{ transform: [{ scale }] }}>
         {children}
       </Animated.View>
     </Pressable>
@@ -44,38 +41,30 @@ export default function RootLayout() {
         tabBarInactiveTintColor: '#90caf9',
         tabBarShowLabel: true,
         tabBarStyle: {
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: TAB_BAR_HEIGHT,
-          width: SCREEN_WIDTH,
-          backgroundColor: '#fff',
+          height: 64,
           borderTopLeftRadius: 18,
           borderTopRightRadius: 18,
+          backgroundColor: 'transparent',
+          position: 'absolute',
+          left: 10,
+          right: 10,
+          bottom: 10,
           elevation: 10,
           shadowColor: '#2196f3',
           shadowOpacity: 0.13,
           shadowRadius: 12,
           shadowOffset: { width: 0, height: 2 },
-          paddingHorizontal: 0,
-          flexDirection: 'row',
         },
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '600',
-          marginBottom: Platform.OS === 'ios' ? 8 : 4,
+          marginBottom: 4,
           fontFamily: 'Kanit-Regular',
         },
         tabBarIconStyle: {
           alignItems: 'center',
           justifyContent: 'center',
-          marginTop: 6,
-        },
-        tabBarItemStyle: {
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
+          marginTop: -20,
         },
         tabBarButton: (props) => <AnimatedTabBarButton {...props} />,
       }}
@@ -85,7 +74,7 @@ export default function RootLayout() {
         options={{
           title: 'ข้อมูลน้ำ',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'rainy' : 'rainy-outline'} size={24} color={color} />
+            <Ionicons style={{ marginLeft: 65, width: 40, height: 22 }} name={focused ? 'rainy' : 'rainy-outline'} size={22} color={color} />
           ),
         }}
       />
@@ -93,15 +82,10 @@ export default function RootLayout() {
         name="chatbot"
         options={{
           title: 'แชทกับน้องต้นน้ำ',
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: () => (
             <Image
               source={require('@/assets/images/icon.png')}
-              style={{
-                width: 32,
-                height: 32,
-                tintColor: color,
-                resizeMode: 'contain',
-              }}
+              style={{ width: 40, height: 22, marginLeft: 40 }}
             />
           ),
         }}
@@ -111,7 +95,7 @@ export default function RootLayout() {
         options={{
           title: 'คู่มือ',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'book' : 'book-outline'} size={24} color={color} />
+            <Ionicons style={{ marginLeft: 70, width: 40, height: 22 }} name={focused ? 'book' : 'book-outline'} size={22} color={color} />
           ),
         }}
       />
@@ -120,7 +104,7 @@ export default function RootLayout() {
         options={{
           title: 'ฉุกเฉิน',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'call' : 'call-outline'} size={26} color={color} />
+            <Ionicons style={{ marginLeft: 65, width: 40, height: 22 }}  name={focused ? 'call' : 'call-outline'} size={24} color={color} />
           ),
         }}
       />
@@ -135,7 +119,7 @@ export default function RootLayout() {
         options={{
           title: 'พยากรณ์อากาศ',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'cloudy' : 'cloudy-outline'} size={24} color={color} />
+            <Ionicons style={{ marginLeft: 65, width: 40, height: 22 }}  name={focused ? 'cloudy' : 'cloudy-outline'} size={22} color={color} />
           ),
         }}
       />

@@ -177,7 +177,7 @@ export default function ChatBot() {
     if (messages.length > 0) {
       setTimeout(() => {
         flatListRef.current?.scrollToEnd({ animated: true });
-      }, 100); // small delay for layout
+      }, 100);
     }
   }, [messages]);
 
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     marginLeft: 10,
     marginRight: 10,
-    marginBottom: 50,
+    marginBottom: 110,
   },
   suggestedChip: {
     backgroundColor: '#ffffffff',

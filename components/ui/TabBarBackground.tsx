@@ -33,7 +33,7 @@ export default function TabBarBackground() {
       ]}
     >
       <LinearGradient
-        colors={['#b6d9f4', '#e3f2fd']}
+        colors={['#b6d9f4', '#c9e5f8ff']}
         start={{ x: 0, y: 0.5 }}
         end={{ x: 1, y: 0.5 }}
         style={StyleSheet.absoluteFill}
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 60,
+    height: 90,
   },
 });
 

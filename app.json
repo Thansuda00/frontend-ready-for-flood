@@ -24,6 +24,9 @@
       "eas": {
         "projectId": "6fd9289b-c2fe-4420-afdf-1ed329fc50e3"
       }
+    },
+    "android": {
+      "versionCode": 2
     }
   }
 }
