@@ -226,14 +226,19 @@ export default function HomeScreen() {
         </ThemedText>
       }
       ListFooterComponent={
-        <TouchableOpacity
-          onPress={() => Linking.openURL('https://chiangrai.thaiwater.net/wl')}
-          style={styles.referenceLink}
-        >
-          <ThemedText style={styles.referenceText}>
-            ข้อมูลเพิ่มเติม: ศูนย์ข้อมูลน้ำระดับจังหวัด
+        <>
+          <TouchableOpacity
+            onPress={() => Linking.openURL('https://chiangrai.thaiwater.net/wl')}
+            style={styles.referenceLink}
+          >
+            <ThemedText style={styles.referenceText}>
+              ข้อมูลเพิ่มเติม: ศูนย์ข้อมูลน้ำระดับจังหวัด
+            </ThemedText>
+          </TouchableOpacity>
+          <ThemedText style={styles.disclaimerText}>
+            ข้อมูลในแอปนี้จัดทำขึ้นจากแหล่งข้อมูลสาธารณะโดยผู้พัฒนาอิสระ ไม่มีความเกี่ยวข้องกับหน่วยงานของรัฐ โปรดใช้เพื่ออ้างอิงเบื้องต้นเท่านั้น
           </ThemedText>
-        </TouchableOpacity>
+        </>
       }
       contentContainerStyle={{ paddingBottom: 60 }}
       showsVerticalScrollIndicator={false}
@@ -456,5 +461,13 @@ const styles = StyleSheet.create({
     color: '#7d7d7dff',
     fontSize: 14,
     textAlign: 'center',
+  },
+  disclaimerText: {
+    color: '#999',
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 8,
+    marginBottom: 16,
+    paddingHorizontal: 16,
   },
 });

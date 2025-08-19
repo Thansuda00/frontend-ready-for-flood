@@ -4,7 +4,7 @@ import { Tabs } from 'expo-router';
 import React, { useRef } from 'react';
 import { Animated, Image, Linking, Pressable } from 'react-native';
 
-import type { PressableProps, GestureResponderEvent } from 'react-native';
+import type { GestureResponderEvent } from 'react-native';
 
 type AnimatedTabBarButtonProps = {
   children: React.ReactNode;
@@ -59,7 +59,7 @@ export default function RootLayout() {
           fontSize: 12,
           fontWeight: '600',
           marginBottom: 4,
-          fontFamily: 'Kanit-Regular',
+          fontFamily: 'Kanit-Regular', // Applied font family
         },
         tabBarIconStyle: {
           alignItems: 'center',
@@ -104,7 +104,7 @@ export default function RootLayout() {
         options={{
           title: 'ฉุกเฉิน',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons style={{ marginLeft: 65, width: 40, height: 22 }}  name={focused ? 'call' : 'call-outline'} size={24} color={color} />
+            <Ionicons style={{ marginLeft: 65, width: 40, height: 22 }} name={focused ? 'call' : 'call-outline'} size={24} color={color} />
           ),
         }}
       />
@@ -119,7 +119,16 @@ export default function RootLayout() {
         options={{
           title: 'พยากรณ์อากาศ',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons style={{ marginLeft: 65, width: 40, height: 22 }}  name={focused ? 'cloudy' : 'cloudy-outline'} size={22} color={color} />
+            <Ionicons style={{ marginLeft: 65, width: 40, height: 22 }} name={focused ? 'cloudy' : 'cloudy-outline'} size={22} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="about"
+        options={{
+          title: 'เกี่ยวกับแอป',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons style={{ marginLeft: 65, width: 40, height: 22 }} name={focused ? 'information-circle' : 'information-circle-outline'} size={22} color={color} />
           ),
         }}
       />
