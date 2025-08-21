@@ -1,9 +1,8 @@
-import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
+import type { PropsWithChildren, ReactElement } from 'react';
 import {
   Platform,
   StyleSheet,
-  View,
-  FlatList,
+  View
 } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -53,7 +52,7 @@ export default function ParallaxScrollView({
         style={[
           styles.header,
           {
-            backgroundColor: colorScheme === 'light' ? '#326a95' : '#1D3D47',
+            backgroundColor: '#326a95',
             ...Platform.select({
               ios: {
                 shadowOffset: { width: 0, height: 4 },
@@ -86,6 +85,7 @@ export default function ParallaxScrollView({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffffff', // Force white background
   },
   header: {
     height: HEADER_HEIGHT,

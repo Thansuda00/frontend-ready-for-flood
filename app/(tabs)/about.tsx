@@ -19,7 +19,7 @@ export default function AboutPage() {
           <Text style={styles.label}>❗ คำชี้แจง: </Text>
           <Text style={styles.value}>
 แอปพลิเคชันนี้พัฒนาโดยผู้พัฒนาอิสระ ไม่มีความเกี่ยวข้อง หรือได้รับการรับรองจากหน่วยงานราชการหรือองค์กรของรัฐใด ๆ ทั้งสิ้น ข้อมูลทั้งหมดในแอปนี้นำมาจากแหล่งข้อมูลสาธารณะ และจัดทำขึ้นเพื่อให้ประชาชนเข้าถึงข้อมูลได้สะดวกมากขึ้นเท่านั้น
-          </Text><br/>
+          </Text>
                     <Text style={styles.value}>
 ⚠️ Disclaimer:
 This app is independently developed and is not affiliated with or endorsed by any government agency. All data is sourced from public government websites and provided solely for informational purposes.
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#326a95',
-    paddingVertical: 20,
+    paddingVertical: 40,
     paddingHorizontal: 16,
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     fontFamily: 'Kanit-Bold', // Applied font family
+    marginTop: 8,
   },
   content: {
     padding: 16,

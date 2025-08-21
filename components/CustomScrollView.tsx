@@ -96,6 +96,7 @@ export default function CustomScrollView({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffffff', // Set background to white
   },
   header: {
     height: HEADER_HEIGHT,

@@ -365,7 +365,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: '#fff',
     elevation: 2,
-    marginBottom: 45,
+    marginBottom: 10,
+    marginTop: 10,
   },
   tableRow: {
     flexDirection: 'row',

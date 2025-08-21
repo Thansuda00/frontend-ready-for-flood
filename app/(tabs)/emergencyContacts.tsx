@@ -46,11 +46,13 @@ export default function EmergencyContactsScreen() {
       </View>
 
       {/* Social Contacts Section */}
-      <View style={styles.card}>
-        <Ionicons name="chatbubbles" size={40} color="#06C755" style={styles.icon} />
-        <ThemedText style={styles.title}>
-          ช่องทางติดต่อออนไลน์
-        </ThemedText>
+      <View style={[styles.card, {marginBottom: 20}]}>
+        <View>
+          <Ionicons name="chatbubbles" size={40} color="#06C755" style={styles.icon} />
+          <ThemedText style={styles.title}>
+            ช่องทางติดต่อออนไลน์
+          </ThemedText>
+        </View>
 
         {/* Facebook Contact */}
         <Pressable
@@ -129,6 +131,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 2 },
+    marginBottom: 20,
   },
   icon: {
     marginBottom: 12,
