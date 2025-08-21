@@ -279,6 +279,17 @@ export default function ChatBot() {
                 </View>
               ))}
             </View>
+            
+            <View style={styles.disclaimerContainer}>
+              <ThemedText style={[styles.disclaimerText]}>
+                ❗ คำชี้แจง: 
+                แอปพลิเคชันนี้พัฒนาโดยผู้พัฒนาอิสระ ไม่ได้เป็นแอปของหน่วยงานราชการ และไม่ได้รับการรับรองจากหน่วยงานราชการใด ๆ ข้อมูลทั้งหมดนำมาจากแหล่งข้อมูลสาธารณะเพื่อประโยชน์ของประชาชนเท่านั้น
+              </ThemedText>
+              <ThemedText style={[styles.disclaimerEngText, { marginBottom: 16 }]}>
+                ⚠️ Disclaimer: 
+                This app is developed by an independent developer and is not affiliated with or endorsed by any government agency. All data is sourced from public government websites for informational purposes only.
+              </ThemedText>
+            </View>
           </>
         }
         contentContainerStyle={{ paddingVertical: 12, paddingHorizontal: 4 }}
@@ -398,7 +409,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     marginLeft: 10,
     marginRight: 10,
-    marginBottom: 110,
+    marginBottom: 8,
   },
   suggestedChip: {
     backgroundColor: '#ffffffff',
@@ -413,9 +424,27 @@ const styles = StyleSheet.create({
   suggestedText: {
     color: '#545353ff',
     fontSize: 14,
+    
   },
   chatbubblesIcon: {
     marginLeft: 12,
     opacity: 0.92,
+  },
+  disclaimerContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 100,
+  },
+  disclaimerText: {
+    color: '#999',
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 8,
+  },
+  disclaimerEngText: {
+    color: '#999',
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 8,
   },
 });

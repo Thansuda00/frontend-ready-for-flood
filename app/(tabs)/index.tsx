@@ -229,15 +229,22 @@ export default function HomeScreen() {
         <>
           <TouchableOpacity
             onPress={() => Linking.openURL('https://chiangrai.thaiwater.net/wl')}
-            style={styles.referenceLink}
+            style={[styles.referenceLink, { marginBottom: 10, marginTop: 20 }]} // Added marginBottom here
           >
             <ThemedText style={styles.referenceText}>
               ข้อมูลเพิ่มเติม: ศูนย์ข้อมูลน้ำระดับจังหวัด
             </ThemedText>
           </TouchableOpacity>
-          <ThemedText style={styles.disclaimerText}>
-            ข้อมูลในแอปนี้จัดทำขึ้นจากแหล่งข้อมูลสาธารณะโดยผู้พัฒนาอิสระ ไม่มีความเกี่ยวข้องกับหน่วยงานของรัฐ โปรดใช้เพื่ออ้างอิงเบื้องต้นเท่านั้น
-          </ThemedText>
+          <View style={styles.disclaimerContainer}>
+            <ThemedText style={[styles.disclaimerText, { marginBottom: 16 }]}>
+              ❗ คำชี้แจง
+              แอปพลิเคชันนี้พัฒนาโดยผู้พัฒนาอิสระ ไม่ได้เป็นแอปของหน่วยงานราชการ และไม่ได้รับการรับรองจากหน่วยงานราชการใด ๆ ข้อมูลทั้งหมดนำมาจากแหล่งข้อมูลสาธารณะเพื่อประโยชน์ของประชาชนเท่านั้น
+            </ThemedText>
+            <ThemedText style={[styles.disclaimerEngText, { marginBottom: 16 }]}>
+              ⚠️ Disclaimer
+              This app is developed by an independent developer and is not affiliated with or endorsed by any government agency. All data is sourced from public government websites for informational purposes only.
+            </ThemedText>
+          </View>
         </>
       }
       contentContainerStyle={{ paddingBottom: 60 }}
@@ -454,7 +461,7 @@ const styles = StyleSheet.create({
   },
 
   referenceLink: {
-    marginBottom: 60,
+    marginBottom: 5,
     alignSelf: 'center',
   },
   referenceText: {
@@ -462,12 +469,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
   },
+  disclaimerContainer: {
+    marginTop: 8,
+    marginBottom: 50,
+    paddingHorizontal: 16,
+  },
   disclaimerText: {
     color: '#999',
     fontSize: 12,
     textAlign: 'center',
     marginTop: 8,
-    marginBottom: 16,
-    paddingHorizontal: 16,
+    marginBottom: 10,
+  },
+  disclaimerEngText: {
+    color: '#999',
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 8,
+    marginBottom: 90,
   },
 });
