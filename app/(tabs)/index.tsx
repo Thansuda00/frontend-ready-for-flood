@@ -16,7 +16,7 @@ const bannerImages = [
 const bannerLinks = [
   'https://www.facebook.com/profile.php?id=61576044613232',
   'https://line.me/R/ti/p/@769btwlv',
-  ''
+  'https://www.facebook.com/share/16qeaMkQbu/?mibextid=wwXIf'
 ];
 
 export default function HomeScreen() {
